@@ -10,10 +10,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
-var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
-
-var app = express();
+const apiRouter = require("./routes/api");
 
 // Connect to mongoDB Atlas
 const mongoURI = process.env.MONGODB_URI;
@@ -22,6 +19,8 @@ async function main() {
   console.log("Connected to MongoDB Atlas");
 }
 main().catch((err) => console.log(err));
+
+var app = express();
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -34,8 +33,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/", indexRouter);
-app.use("/users", usersRouter);
+app.use("/", apiRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
