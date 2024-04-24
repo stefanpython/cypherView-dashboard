@@ -9,7 +9,18 @@ router.get("/", function (req, res, next) {
 });
 
 // USER ROUTES
+
+// -- Signup
 router.post("/sign-up", user_controller.signup);
+
+// -- Login
 router.post("/login", user_controller.login);
+
+// -- GET user details
+router.get(
+  "/user/:userId",
+  passport.authenticate("jwt", { session: false }),
+  user_controller.get_user_details
+);
 
 module.exports = router;

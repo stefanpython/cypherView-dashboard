@@ -73,6 +73,40 @@ exports.login = async (req, res, next) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.json({ message: "Login succesful", token });
+    return res.json({ message: "Login succesful", token });
   })(req, res, next);
 };
+
+// Get user details
+exports.get_user_details = [
+  // Validate user ID
+  param("userId").isMongoId().withMessage("Invalid user Id"),
+
+  async (req, res) => {
+    // Check for validation errors
+    const validationErrors = validationResult(req);
+    if (!validationErrors.isEmpty()) {
+      return req.status(400).json({ errors: validationErrors.array() });
+    }
+
+    try {
+      // Extract user id from request parameters
+      const { userId } = req.params;
+
+      // Find user in db by ID excluding password field
+      const user = await User.findById(userId).select("-password");
+
+      if (!user) {
+        return res.status(400).json({ message: "User not found" });
+      }
+
+      // Send user details as a response to the frontend
+      return res
+        .status(200)
+        .json({ message: "Get user details success", user });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  },
+];
