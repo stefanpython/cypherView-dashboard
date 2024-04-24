@@ -9,6 +9,13 @@ require("dotenv").config();
 const cors = require("cors");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+const User = require("./models/User");
+
+// Passport imports
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+const JWTstrategy = require("passport-jwt").Strategy;
+const ExtractJWT = require("passport-jwt").ExtractJwt;
 
 const apiRouter = require("./routes/api");
 
@@ -32,6 +39,59 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+
+// Define passport login strategy
+passport.use(
+  "login",
+
+  new LocalStrategy(
+    {
+      usernameField: "email",
+      passwordField: "password",
+    },
+
+    async (email, password, done) => {
+      try {
+        // Verify email and password
+        const user = await User.findOne({ email });
+        if (!user) {
+          return done(null, false, { message: "Invalid email" });
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+          return done(null, false, { message: "Incorrect password" });
+        }
+        return done(null, user);
+      } catch (err) {
+        return done(err);
+      }
+    }
+  )
+);
+
+// Verify passport token
+passport.use(
+  new JWTstrategy(
+    {
+      secretOrKey: process.env.PASSPORT_KEY,
+      jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+    },
+
+    async (token, done) => {
+      try {
+        const user = await User.findById(token.userId);
+        if (!user) {
+          return done(null, false);
+        }
+
+        return done(null, user);
+      } catch (err) {
+        return done(err);
+      }
+    }
+  )
+);
 
 app.use("/", apiRouter);
 
