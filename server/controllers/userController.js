@@ -2,9 +2,10 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const { body, param, validationResult } = require("express-validator");
+const passport = require("passport");
 require("dotenv").config();
 
-// User SignUp
+// SignUp
 exports.signup = [
   // Sanitize inputs
   body("username").trim().escape(),
@@ -49,3 +50,29 @@ exports.signup = [
     }
   },
 ];
+
+// Login
+exports.login = async (req, res, next) => {
+  passport.authenticate("login", async (err, user, info) => {
+    if (err) {
+      return res.status(500).json({ message: "Internal server error" });
+    }
+
+    if (!user) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    // Generate JWT token for successful authentication
+    const token = jwt.sign(
+      { userId: user.id, username: user.username },
+      process.env.PASSPORT_KEY,
+      { expiresIn: "7days" }
+    );
+
+    res.cookie("token", token, {
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    res.json({ message: "Login succesful", token });
+  })(req, res, next);
+};
