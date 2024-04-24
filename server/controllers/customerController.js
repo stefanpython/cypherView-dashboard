@@ -38,3 +38,38 @@ exports.create_customer = [
     }
   },
 ];
+
+// Get details of a customer based on id
+exports.get_customer_details = [
+  // Validate customer ID
+  param("customerId").isMongoId().withMessage("Invalid customer ID"),
+
+  async (req, res) => {
+    // Check for validation errors
+    const validationErrors = validationResult(req);
+    if (!validationErrors.isEmpty()) {
+      return res.status(400).json({ errors: validationErrors.array() });
+    }
+
+    try {
+      // Extract ID from request parameters
+      const { customerId } = req.params;
+
+      // Find customer in database
+      const customer = await Customer.findById(customerId);
+
+      // Check if customer exists
+      if (!customer) {
+        return res.status(404).json({ message: "Customer not found" });
+      }
+
+      // Send customer details as response
+      return res
+        .status(200)
+        .json({ message: "Get customer details success", customer });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  },
+];

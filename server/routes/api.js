@@ -18,7 +18,7 @@ router.post("/sign-up", user_controller.signup);
 // -- Login
 router.post("/login", user_controller.login);
 
-// -- GET user details
+// -- GET a user`s details
 router.get(
   "/user/:userId",
   passport.authenticate("jwt", { session: false }),
@@ -30,6 +30,9 @@ router.get(
 // CUSTOMER ROUTES
 
 // -- Create customer
-router.post("/customer/create", customer_controller.create_customer);
+router.post("/customers", customer_controller.create_customer);
+
+// -- GET a customer`s details
+router.get("/customers/:customerId", customer_controller.get_customer_details);
 
 module.exports = router;
