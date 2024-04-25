@@ -1,15 +1,18 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const invoiceSchema = new Schema({
-  customer: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Customer",
-    required: true,
+const invoiceSchema = new Schema(
+  {
+    customer: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Customer",
+      required: true,
+    },
+    amount: { type: Number, required: true },
+    date: { type: Date, default: Date.now },
+    status: { type: String, enum: ["paid", "pending"], default: "pending" },
   },
-  amount: { type: Number, required: true },
-  date: { type: Date, default: Date.now },
-  status: { type: String, enum: ["paid", "pending"], default: "pending" },
-});
+  { timestamps: true }
+);
 
-module.exports = mongoose.exports("Invoice", invoiceSchema);
+module.exports = mongoose.model("Invoice", invoiceSchema);

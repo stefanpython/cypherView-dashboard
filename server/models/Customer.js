@@ -8,7 +8,7 @@ const customerSchema = new Schema(
     email: { type: String, required: true },
     image: { type: String },
   },
-  { timeseries: true }
+  { timestamps: true }
 );
 
 customerSchema.virtual("fullName").get(function () {
