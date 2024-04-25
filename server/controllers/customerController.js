@@ -112,10 +112,20 @@ exports.update_customer = [
       // Extract customer ID from the request parameters
       const { customerId } = req.params;
 
+      // Destructure request body
+      const { firstName, lastName, email, image } = req.body;
+
+      const updateFields = {};
+
+      if (firstName) updateFields.firstName = firstName;
+      if (lastName) updateFields.lastName = lastName;
+      if (email) updateFields.email = email;
+      if (image) updateFields.image = image;
+
       // Find customer in database and update details
       const updatedCustomer = await Customer.findByIdAndUpdate(
         customerId,
-        req.body,
+        updateFields,
         { new: true }
       );
 

@@ -91,3 +91,55 @@ exports.get_invoice_details = [
     }
   },
 ];
+
+// Update invoice
+exports.update_invoice = [
+  // Validate invoice ID
+  param("invoiceId").isMongoId().withMessage("Invalid invoice ID"),
+
+  // Validate and Sanitize inputs
+  body("customer").trim().escape(),
+  body("amount").trim().escape(),
+  body("status").trim().escape(),
+
+  async (req, res) => {
+    // Check for validation errors
+    const validationErrors = validationResult(req);
+    if (!validationErrors.isEmpty()) {
+      return res.status(400).json({ errors: validationErrors.array() });
+    }
+
+    try {
+      // Extract invoice id from params
+      const { invoiceId } = req.params;
+
+      // Destructure request
+      const { customer, amount, status } = req.body;
+
+      const updateFields = {};
+
+      if (customer) updateFields.customer = customer;
+      if (amount) updateFields.amount = amount;
+      if (status) updateFields.status = status;
+
+      // Find and update invoice in db
+      const updatedInvoice = await Invoice.findByIdAndUpdate(
+        invoiceId,
+        updateFields,
+        { new: true }
+      );
+
+      // Verify if invoice exists in db
+      if (!updatedInvoice) {
+        return res.status(400).json({ message: "Failed to update invoice" });
+      }
+
+      return res
+        .status(200)
+        .json({ message: "Invoice updated successfully", updatedInvoice });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  },
+];
