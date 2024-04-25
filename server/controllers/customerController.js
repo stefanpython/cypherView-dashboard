@@ -1,15 +1,31 @@
 const Customer = require("../models/Customer");
 const { body, param, validationResult } = require("express-validator");
+const multer = require("multer");
+
+// Set up multer storage and filename for uploading images
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/images");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 // Create new customer
 exports.create_customer = [
+  // Handle single file upload with field name "image"
+  upload.single("image"),
+
   body("firstName").trim().escape(),
   body("lastName").trim().escape(),
   body("email").trim().escape(),
-  body("image").trim().escape(),
+  body("image").optional().trim().isURL().withMessage("Image URL is required"),
 
   async (req, res) => {
-    const { firstName, lastName, email, image } = req.body;
+    const { firstName, lastName, email } = req.body;
 
     try {
       // Check if email already exists in database
@@ -23,7 +39,7 @@ exports.create_customer = [
         firstName,
         lastName,
         email,
-        image,
+        image: req.file ? req.file.filename : null,
       });
 
       // Save customer
