@@ -49,4 +49,11 @@ router.put(
   customer_controller.update_customer
 );
 
+// -- DELETE a customer
+router.delete(
+  "/customers/:customerId",
+  passport.authenticate("jwt", { session: false }),
+  customer_controller.delete_customer
+);
+
 module.exports = router;

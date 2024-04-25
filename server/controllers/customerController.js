@@ -133,3 +133,35 @@ exports.update_customer = [
     }
   },
 ];
+
+// Delete customer
+exports.delete_customer = [
+  // Validate customer ID
+  param("customerId").isMongoId().withMessage("Invalid customer ID"),
+
+  async (req, res) => {
+    // Check for validation errors
+    const validationErrors = validationResult(req);
+    if (!validationErrors.isEmpty()) {
+      return res.status(400).json({ errors: validationErrors.array() });
+    }
+
+    try {
+      // Extract customer ID from request params
+      const { customerId } = req.params;
+
+      // Find customer in database by ID and delete
+      const deletedCustomer = await Customer.findByIdAndDelete(customerId);
+
+      if (!deletedCustomer) {
+        return res.status(400).json({ message: "Customer not found" });
+      }
+
+      // Send success message to the frontend
+      return res.status(200).json({ message: "Customer deleted successfully" });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  },
+];
