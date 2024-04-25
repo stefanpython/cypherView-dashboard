@@ -143,3 +143,35 @@ exports.update_invoice = [
     }
   },
 ];
+
+// Delete invoice
+exports.delete_invoice = [
+  // Validate invoice ID
+  param("invoiceId").isMongoId().withMessage("Invalid invoice ID"),
+
+  async (req, res) => {
+    // Check for validation errors
+    const validationErrors = validationResult(req);
+    if (!validationErrors.isEmpty()) {
+      return res.status(400).json({ errors: validationErrors.array() });
+    }
+
+    try {
+      // Extract customer ID from request params
+      const { invoiceId } = req.params;
+
+      // Find customer in database by ID and delete
+      const deleteInvoce = await Invoice.findByIdAndDelete(invoiceId);
+
+      if (!deleteInvoce) {
+        return res.status(400).json({ message: "Invoice not found" });
+      }
+
+      // Send success message to the frontend
+      return res.status(200).json({ message: "Invoice deleted successfully" });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  },
+];

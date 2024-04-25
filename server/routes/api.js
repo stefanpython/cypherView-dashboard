@@ -85,4 +85,11 @@ router.put(
   invoice_controller.update_invoice
 );
 
+// -- DELETE an invoice
+router.delete(
+  "/invoices/:invoiceId",
+  passport.authenticate("jwt", { session: false }),
+  invoice_controller.delete_invoice
+);
+
 module.exports = router;
