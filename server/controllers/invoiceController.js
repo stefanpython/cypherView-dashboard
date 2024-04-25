@@ -1,4 +1,4 @@
-const { body, validationResult } = require("express-validator");
+const { body, param, validationResult } = require("express-validator");
 const Invoice = require("../models/Invoice");
 
 // Create a new invoice
@@ -56,3 +56,38 @@ exports.get_all_invoices = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
+// Get details for an invoice based on ID
+exports.get_invoice_details = [
+  // Validate customer ID
+  param("invoiceId").isMongoId().withMessage("Invalid customer ID"),
+
+  async (req, res) => {
+    // Check for validation errors
+    const validationErrors = validationResult(req);
+    if (!validationErrors.isEmpty()) {
+      return res.status(400).json({ errors: validationErrors.array() });
+    }
+
+    try {
+      // Extract ID from parameters
+      const { invoiceId } = req.params;
+
+      // Find invoice in db
+      const invoice = await Invoice.findById(invoiceId);
+
+      // Check if invoice exists in db
+      if (!invoice) {
+        return res.status(400).json({ message: "Invoice not found" });
+      }
+
+      // Send invoice details as response
+      return res
+        .status(200)
+        .json({ message: "Success GET invoice details", invoice });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  },
+];

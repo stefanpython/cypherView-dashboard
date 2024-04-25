@@ -71,4 +71,11 @@ router.get(
   invoice_controller.get_all_invoices
 );
 
+// -- GET an invoice`s details
+router.get(
+  "/invoices/:invoiceId",
+  passport.authenticate("jwt", { session: false }),
+  invoice_controller.get_invoice_details
+);
+
 module.exports = router;
