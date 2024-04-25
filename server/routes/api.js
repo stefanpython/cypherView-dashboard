@@ -64,4 +64,11 @@ router.post(
   invoice_controller.create_invoice
 );
 
+// -- GET list of all invoices
+router.get(
+  "/invoices",
+  passport.authenticate("jwt", { session: false }),
+  invoice_controller.get_all_invoices
+);
+
 module.exports = router;

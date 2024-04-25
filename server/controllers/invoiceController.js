@@ -36,3 +36,23 @@ exports.create_invoice = [
     }
   },
 ];
+
+// Get a list of all invoices
+exports.get_all_invoices = async (req, res) => {
+  try {
+    // Retrieve list of all customers
+    const invoices = await Invoice.find();
+    if (!invoices) {
+      return res
+        .status(400)
+        .json({ message: "Failed to retrive invoice list" });
+    }
+
+    return res
+      .status(200)
+      .json({ message: "Invoice list retrieved successfully", invoices });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
