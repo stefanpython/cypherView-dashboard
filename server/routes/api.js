@@ -35,4 +35,11 @@ router.post("/customers", customer_controller.create_customer);
 // -- GET a customer`s details
 router.get("/customers/:customerId", customer_controller.get_customer_details);
 
+// -- UPDATE a customer
+router.put(
+  "/customers/:customerId",
+  passport.authenticate("jwt", { session: false }),
+  customer_controller.update_customer
+);
+
 module.exports = router;
