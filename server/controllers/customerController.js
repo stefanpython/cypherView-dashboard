@@ -74,6 +74,22 @@ exports.get_customer_details = [
   },
 ];
 
+// Get details of all customers
+exports.get_all_customers = async (req, res) => {
+  try {
+    // Retrieve list of all customers
+    const customers = await Customer.find();
+
+    // Send list as a response
+    return res
+      .status(200)
+      .json({ message: "Customer list retrieved successfully", customers });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 // Update customer details
 exports.update_customer = [
   // Validate customer ID

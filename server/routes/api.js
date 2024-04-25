@@ -35,6 +35,13 @@ router.post("/customers", customer_controller.create_customer);
 // -- GET a customer`s details
 router.get("/customers/:customerId", customer_controller.get_customer_details);
 
+// -- GET list of all customers
+router.get(
+  "/customers",
+  passport.authenticate("jwt", { session: false }),
+  customer_controller.get_all_customers
+);
+
 // -- UPDATE a customer
 router.put(
   "/customers/:customerId",
