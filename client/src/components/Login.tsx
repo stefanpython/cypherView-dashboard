@@ -1,13 +1,14 @@
 import { FormEvent, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "./AuthContext";
 
 export default function Login() {
   const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordErrorm, setPasswordError] = useState("");
   const [error, setError] = useState("");
+
+  const { setIsLoggedIn } = useAuth();
 
   const navigate = useNavigate();
   const [cookies, setCookies] = useCookies(["token"]);
@@ -41,6 +42,9 @@ export default function Login() {
       // Set token in cookies
       const { token } = data;
       setCookies("token", token, { path: "/" });
+
+      // Set auth context hook to true
+      setIsLoggedIn(true);
 
       navigate("/dashboard");
     } catch (error) {

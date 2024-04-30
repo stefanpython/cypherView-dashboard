@@ -1,16 +1,29 @@
-import { HashRouter, Routes, Route } from "react-router-dom";
-import Home from "./components/Home";
+import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
+import Welcome from "./components/Welcome";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
+import { useAuth } from "./components/AuthContext";
 
 function App() {
+  const { isLoggedIn } = useAuth();
+
+  console.log(isLoggedIn);
   return (
     <div className="App">
       <HashRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route
+            path="/"
+            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Welcome />}
+          />
+          <Route
+            path="/login"
+            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Login />}
+          />
+          <Route
+            path="/dashboard"
+            element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />}
+          />
         </Routes>
       </HashRouter>
     </div>
