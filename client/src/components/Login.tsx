@@ -65,7 +65,7 @@ export default function Login() {
       <div className="relative mx-auto flex w-full max-w-[400px] flex-col space-y-2.5 p-4 md:-mt-32 shadow-lg">
         <div className="flex h-20 w-full items-end rounded-lg bg-blue-400 p-3 md:h-36">
           <div className="w-32 text-white md:w-36 flex items-center">
-            <img className="w-8 mr-1" src="./layout.png" alt="logo" />
+            <img className="w-8 mr-1" src="./eye.png" alt="logo" />
             <p className="text-3xl">CypherView</p>
           </div>
         </div>

@@ -6,6 +6,9 @@ import { RiShutDownLine } from "react-icons/ri";
 import { useCookies } from "react-cookie";
 import { useAuth } from "./AuthContext";
 import { useState } from "react";
+import Home from "./dashboard/Home";
+import Inovices from "./dashboard/Inovices";
+import Customers from "./dashboard/Customers";
 
 const MenuItem = ({ icon: Icon, label, selected, onClick }: any) => {
   // Define the base class name for the menu item
@@ -52,7 +55,10 @@ export default function Dashboard() {
             className="mb-2 flex h-20 items-end justify-start rounded-md bg-blue-400 p-4 md:h-40"
             to="/"
           >
-            <div className="w-32 text-white md:w-40">CypherView</div>
+            <div className="w-32 text-white md:w-40 flex items-center">
+              <img className="w-8 mr-1" src="./eye.png" alt="eye logo" />
+              <p className="text-xl font-medium"> CypherView</p>
+            </div>
           </Link>
           <div className="flex grow flex-row justify-between space-x-2 md:flex-col md:space-x-0 md:space-y-2">
             <MenuItem
@@ -85,8 +91,10 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="flex-grow p-6 md:overflow-y-auto md:p-12">
-        OTHER pages
+      <div className="flex-grow p-6 md:overflow-y-auto md:p-12 bg-white">
+        {selectedTab === "home" && <Home />}
+        {selectedTab === "invoices" && <Inovices />}
+        {selectedTab === "customers" && <Customers />}
       </div>
     </div>
   );
