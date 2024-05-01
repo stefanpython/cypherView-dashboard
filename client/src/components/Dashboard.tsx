@@ -5,10 +5,20 @@ import { PiUsersThreeLight } from "react-icons/pi";
 import { RiShutDownLine } from "react-icons/ri";
 import { useCookies } from "react-cookie";
 import { useAuth } from "./AuthContext";
+import { useState } from "react";
 
-const MenuItem = ({ icon: Icon, label }: any) => {
+const MenuItem = ({ icon: Icon, label, selected, onClick }: any) => {
+  // Define the base class name for the menu item
+  let className =
+    "flex h-[48px] w-full grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium md:flex-none md:justify-start md:p-2 md:px-3 cursor-pointer hover:bg-sky-100 hover:text-blue-600";
+
+  // If the menu item is selected, add additional classes
+  if (selected) {
+    className += " bg-sky-100 text-blue-600";
+  }
+
   return (
-    <div className="flex h-[48px] w-full grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3 cursor-pointer">
+    <div className={className} onClick={onClick}>
       <Icon size={20} />
       <p className="hidden md:block">{label}</p>
     </div>
@@ -17,6 +27,7 @@ const MenuItem = ({ icon: Icon, label }: any) => {
 
 export default function Dashboard() {
   const [token, setToken] = useCookies(["token"]);
+  const [selectedTab, setSelectedTab] = useState("home");
 
   const navigate = useNavigate();
   const { setIsLoggedIn } = useAuth();
@@ -44,10 +55,24 @@ export default function Dashboard() {
             <div className="w-32 text-white md:w-40">CypherView</div>
           </Link>
           <div className="flex grow flex-row justify-between space-x-2 md:flex-col md:space-x-0 md:space-y-2">
-            <MenuItem icon={IoHomeOutline} label="Home" />
-            <MenuItem icon={LiaFileInvoiceDollarSolid} label="Invoices" />
-            <MenuItem icon={PiUsersThreeLight} label="Customers" />
-
+            <MenuItem
+              icon={IoHomeOutline}
+              label="Home"
+              selected={selectedTab === "home"}
+              onClick={() => setSelectedTab("home")}
+            />
+            <MenuItem
+              icon={LiaFileInvoiceDollarSolid}
+              label="Invoices"
+              selected={selectedTab === "invoices"}
+              onClick={() => setSelectedTab("invoices")}
+            />
+            <MenuItem
+              icon={PiUsersThreeLight}
+              label="Customers"
+              selected={selectedTab === "customers"}
+              onClick={() => setSelectedTab("customers")}
+            />
             <div className="hidden h-auto w-full grow rounded-md bg-gray-50 md:block"></div>
             <button
               onClick={handleSignOut}
