@@ -7,7 +7,6 @@ import { useAuth } from "./components/AuthContext";
 function App() {
   const { isLoggedIn } = useAuth();
 
-  console.log(isLoggedIn);
   return (
     <div className="App">
       <HashRouter>

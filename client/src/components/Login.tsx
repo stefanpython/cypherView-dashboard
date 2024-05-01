@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
@@ -12,6 +12,14 @@ export default function Login() {
 
   const navigate = useNavigate();
   const [cookies, setCookies] = useCookies(["token"]);
+
+  // Check if the token exists in cookies when the component mounts
+  useEffect(() => {
+    const token = cookies.token;
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, [cookies.token, setIsLoggedIn, navigate]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
