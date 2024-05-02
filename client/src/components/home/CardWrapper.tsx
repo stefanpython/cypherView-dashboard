@@ -2,8 +2,43 @@ import { CiMoneyBill } from "react-icons/ci";
 import { WiTime3 } from "react-icons/wi";
 import { BsEnvelopePaper } from "react-icons/bs";
 import { PiUsersThree } from "react-icons/pi";
+import { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 
 export default function CardWrapper() {
+  const [cookies, setCookies] = useCookies(["token"]);
+  const [totalCollected, setTotalCollected] = useState("");
+
+  const fetchTotalCollected = async () => {
+    try {
+      // Try to fetch total collected $ amount
+      const res = await fetch(
+        "http://localhost:3000/invoices/total-collected",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${cookies.token}`,
+          },
+        }
+      );
+
+      // Check if response is ok
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message);
+      }
+
+      // Save fetched data
+      const invoiceData = await res.json();
+      setTotalCollected(invoiceData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTotalCollected();
+  }, []);
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
       <div className="rounded-xl bg-gray-50 p-2 shadow-sm">

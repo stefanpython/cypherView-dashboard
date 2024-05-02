@@ -1,5 +1,3 @@
-import { HiOutlineArrowPath } from "react-icons/hi2";
-
 export default function LatestInvoices() {
   return (
     <div className="flex w-full flex-col md:col-span-4">
@@ -38,7 +36,7 @@ export default function LatestInvoices() {
       })}  MAP OVER INVOICES HERE*/}
         </div>
         <div className="flex items-center pb-2 pt-6">
-          <HiOutlineArrowPath />
+          <img className="w-4" src="./circle.png" alt="circle" />
 
           <h3 className="ml-2 text-sm text-gray-500 ">Updated just now</h3>
         </div>
