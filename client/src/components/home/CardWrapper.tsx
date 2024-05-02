@@ -5,9 +5,14 @@ import { PiUsersThree } from "react-icons/pi";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 
+interface TotalCollectedData {
+  totalCollectedAmount: string;
+}
+
 export default function CardWrapper() {
   const [cookies, setCookies] = useCookies(["token"]);
-  const [totalCollected, setTotalCollected] = useState("");
+  const [totalCollected, setTotalCollected] =
+    useState<TotalCollectedData | null>(null);
 
   const fetchTotalCollected = async () => {
     try {
@@ -39,6 +44,8 @@ export default function CardWrapper() {
   useEffect(() => {
     fetchTotalCollected();
   }, []);
+
+  console.log(totalCollected);
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
       <div className="rounded-xl bg-gray-50 p-2 shadow-sm">
@@ -52,7 +59,7 @@ export default function CardWrapper() {
           className="
       truncate rounded-xl bg-white px-4 py-8 text-center text-2xl"
         >
-          value
+          $ {totalCollected?.totalCollectedAmount}
         </p>
       </div>
 
