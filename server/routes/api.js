@@ -64,6 +64,13 @@ router.get(
   invoice_controller.calculateTotalCollectedAmount
 );
 
+// -- PENDING AMOUNT invoice
+router.get(
+  "/invoices/total-pending",
+  passport.authenticate("jwt", { session: false }),
+  invoice_controller.calculateTotalPendingAmount
+);
+
 // -- CREATE invoice
 router.post(
   "/invoices",
@@ -97,13 +104,6 @@ router.delete(
   "/invoices/:invoiceId",
   passport.authenticate("jwt", { session: false }),
   invoice_controller.delete_invoice
-);
-
-// -- PENDING AMOUNT invoice
-router.get(
-  "/invoices/total-pending",
-  passport.authenticate("jwt", { session: false }),
-  invoice_controller.calculateTotalPendingAmount
 );
 
 module.exports = router;
