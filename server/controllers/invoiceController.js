@@ -7,9 +7,10 @@ exports.create_invoice = [
   body("customer").trim().escape(),
   body("amount").toFloat(),
   body("date").toDate(),
+  body("status").trim().escape(),
 
   async (req, res) => {
-    const { customer, amount, date } = req.body;
+    const { customer, amount, date, status } = req.body;
 
     try {
       // Check if invoice already exists in database
@@ -22,6 +23,7 @@ exports.create_invoice = [
       const newInvoice = new Invoice({
         customer,
         amount,
+        status,
       });
 
       // Save new invoice
@@ -175,3 +177,46 @@ exports.delete_invoice = [
     }
   },
 ];
+
+// Calculate the collected amount from invoices
+exports.calculateTotalCollectedAmount = async (req, res) => {
+  try {
+    const invoices = await Invoice.find({ status: "paid" });
+    const totalCollectedAmount = invoices.reduce(
+      (total, invoice) => total + invoice.amount,
+      0
+    );
+    res.json({ totalCollectedAmount });
+  } catch (error) {
+    console.error("BLABLABLA", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+// Calculate the pending amount from invoices
+exports.calculateTotalPendingAmount = async (req, res) => {
+  try {
+    const invoices = await Invoice.find({ status: "pending" });
+    const totalPendingAmount = invoices.reduce(
+      (total, invoice) => total + invoice.amount,
+      0
+    );
+    res.json({ totalPendingAmount });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+exports.test = async (req, res) => {
+  try {
+    // Simulate an error for testing purposes
+    throw new Error("An error occurred while processing the request");
+
+    // Return success response if no error occurs
+    return res.json({ message: "this works" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
