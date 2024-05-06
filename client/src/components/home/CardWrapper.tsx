@@ -9,11 +9,20 @@ interface TotalCollectedData {
   totalCollectedAmount: string;
 }
 
+interface TotalPendingData {
+  totalPendingAmount: string;
+}
+
 export default function CardWrapper() {
   const [cookies, setCookies] = useCookies(["token"]);
   const [totalCollected, setTotalCollected] =
     useState<TotalCollectedData | null>(null);
+  const [totalPending, setTotalPending] = useState<TotalPendingData | null>(
+    null
+  );
+  const [totalInvoices, setTotalInvoices] = useState(null);
 
+  // Fetch total amount of $ collected
   const fetchTotalCollected = async () => {
     try {
       // Try to fetch total collected $ amount
@@ -41,11 +50,60 @@ export default function CardWrapper() {
     }
   };
 
+  // Fetch pending amount of $
+  const fetchPending = async () => {
+    try {
+      const res = await fetch("http://localhost:3000/invoices/total-pending", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.token}`,
+        },
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message);
+      }
+
+      const invoiceData = await res.json();
+      setTotalPending(invoiceData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Fetch total number of invoices
+  const fetchTotalInvoices = async () => {
+    try {
+      const res = await fetch("http://localhost:3000/invoices", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.token}`,
+        },
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message);
+      }
+
+      const invoiceData = await res.json();
+      setTotalInvoices(invoiceData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchTotalCollected();
+    fetchPending();
+    fetchTotalInvoices();
   }, []);
 
-  console.log(totalCollected);
+  //@ts-ignore
+  // console.log(totalInvoices?.invoices[0]);
+
+  console.log();
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
       <div className="rounded-xl bg-gray-50 p-2 shadow-sm">
@@ -59,7 +117,7 @@ export default function CardWrapper() {
           className="
       truncate rounded-xl bg-white px-4 py-8 text-center text-2xl"
         >
-          $ {totalCollected?.totalCollectedAmount}
+          <span>{/* @ts-ignore */}</span>${totalCollected?.totalCollectedAmount}
         </p>
       </div>
 
@@ -75,7 +133,7 @@ export default function CardWrapper() {
           className="
       truncate rounded-xl bg-white px-4 py-8 text-center text-2xl"
         >
-          value
+          $ {totalPending?.totalPendingAmount}
         </p>
       </div>
 
@@ -91,7 +149,7 @@ export default function CardWrapper() {
           className="
       truncate rounded-xl bg-white px-4 py-8 text-center text-2xl"
         >
-          value
+          $ {totalInvoices?.invoices.length}
         </p>
       </div>
 

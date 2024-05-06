@@ -7,7 +7,7 @@ exports.create_invoice = [
   body("customer").trim().escape(),
   body("amount").toFloat(),
   body("date").toDate(),
-  body("status").trim().escape(),
+  body("status").optional().trim().escape(),
 
   async (req, res) => {
     const { customer, amount, date, status } = req.body;
@@ -205,18 +205,5 @@ exports.calculateTotalPendingAmount = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
-  }
-};
-
-exports.test = async (req, res) => {
-  try {
-    // Simulate an error for testing purposes
-    throw new Error("An error occurred while processing the request");
-
-    // Return success response if no error occurs
-    return res.json({ message: "this works" });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Internal server error" });
   }
 };
