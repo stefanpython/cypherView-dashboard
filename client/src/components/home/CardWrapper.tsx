@@ -21,6 +21,7 @@ export default function CardWrapper() {
     null
   );
   const [totalInvoices, setTotalInvoices] = useState(null);
+  const [totalCustomers, setTotalCustomers] = useState(null);
 
   // Fetch total amount of $ collected
   const fetchTotalCollected = async () => {
@@ -94,10 +95,33 @@ export default function CardWrapper() {
     }
   };
 
+  // Fetch total number or customers
+  const fetchTotalCustomers = async () => {
+    try {
+      const res = await fetch("http://localhost:3000/customers", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.token}`,
+        },
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message);
+      }
+
+      const customerData = await res.json();
+      setTotalCustomers(customerData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchTotalCollected();
     fetchPending();
     fetchTotalInvoices();
+    fetchTotalCustomers();
   }, []);
 
   //@ts-ignore
@@ -149,7 +173,7 @@ export default function CardWrapper() {
           className="
       truncate rounded-xl bg-white px-4 py-8 text-center text-2xl"
         >
-          $ {totalInvoices?.invoices.length}
+          {totalInvoices?.invoices.length}
         </p>
       </div>
 
@@ -165,7 +189,7 @@ export default function CardWrapper() {
           className="
       truncate rounded-xl bg-white px-4 py-8 text-center text-2xl"
         >
-          value
+          {totalCustomers?.customers.length}
         </p>
       </div>
     </div>
