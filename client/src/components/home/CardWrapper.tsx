@@ -13,6 +13,14 @@ interface TotalPendingData {
   totalPendingAmount: string;
 }
 
+interface TotalInvoicesData {
+  invoices: string;
+}
+
+interface TotalCustomersData {
+  customers: string;
+}
+
 export default function CardWrapper() {
   const [cookies, setCookies] = useCookies(["token"]);
   const [totalCollected, setTotalCollected] =
@@ -20,8 +28,11 @@ export default function CardWrapper() {
   const [totalPending, setTotalPending] = useState<TotalPendingData | null>(
     null
   );
-  const [totalInvoices, setTotalInvoices] = useState(null);
-  const [totalCustomers, setTotalCustomers] = useState(null);
+  const [totalInvoices, setTotalInvoices] = useState<TotalInvoicesData | null>(
+    null
+  );
+  const [totalCustomers, setTotalCustomers] =
+    useState<TotalCustomersData | null>(null);
 
   // Fetch total amount of $ collected
   const fetchTotalCollected = async () => {
