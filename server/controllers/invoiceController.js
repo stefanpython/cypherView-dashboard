@@ -43,7 +43,7 @@ exports.create_invoice = [
 exports.get_all_invoices = async (req, res) => {
   try {
     // Retrieve list of all customers
-    const invoices = await Invoice.find();
+    const invoices = await Invoice.find().populate("customer");
     if (!invoices) {
       return res
         .status(400)
