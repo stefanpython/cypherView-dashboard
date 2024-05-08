@@ -41,7 +41,7 @@ export default function LatestInvoices() {
       }
 
       const data = await res.json();
-      setInvoices(data.invoices); // Assuming the invoices are nested under a property named "invoices"
+      setInvoices(data.invoices);
     } catch (error) {
       console.log(error);
     }
@@ -51,7 +51,7 @@ export default function LatestInvoices() {
     fetchInvoices();
   }, []);
 
-  console.log(invoices);
+  // console.log(invoices);
 
   return (
     <div className="flex w-full flex-col md:col-span-4">

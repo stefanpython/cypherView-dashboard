@@ -1,13 +1,82 @@
 import { LuCalendarClock } from "react-icons/lu";
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
+import { useCookies } from "react-cookie";
 
 export default function RevenueChart() {
   const chartRef = useRef(null);
 
+  const [cookies, setCookies] = useCookies(["token"]);
+  const [invoices, setInvoices] = useState([]);
+  const [revenueData, setRevenueData] = useState([]);
+
+  // Fetch Invoices
+  const fetchInvoices = async () => {
+    try {
+      const res = await fetch("http://localhost:3000/invoices", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.token}`,
+        },
+      });
+
+      if (!res.ok) {
+        const invoicesData = await res.json();
+        throw new Error(invoicesData.message);
+      }
+
+      const data = await res.json();
+      setInvoices(data.invoices);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"]; // Sample months
-    const data = [1000, 2000, 1500, 2500, 1800, 3000]; // Sample revenue data
+    // Transform invoice data into revenue data
+    const transformedData = invoices.map((invoice) => {
+      // console.log(invoice.date);
+      return {
+        month: new Date(invoice.date)
+          .toLocaleString("default", {
+            month: "short",
+          })
+          .slice(0, 3),
+        revenue: invoice.amount,
+      };
+    });
+
+    setRevenueData(transformedData);
+  }, [invoices]);
+
+  useEffect(() => {
+    fetchInvoices();
+  }, []);
+
+  useEffect(() => {
+    if (revenueData.length === 0) return;
+
+    // Sort revenueData by month
+    const sortedData = revenueData.sort((a, b) => {
+      const months = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
+      return months.indexOf(a.month) - months.indexOf(b.month);
+    });
+
+    const labels = sortedData.map((item) => item.month);
+    const data = sortedData.map((item) => item.revenue);
 
     const config = {
       type: "line",
@@ -37,7 +106,7 @@ export default function RevenueChart() {
     return () => {
       chart.destroy();
     };
-  }, []);
+  }, [revenueData]);
 
   return (
     <div className="w-full md:col-span-4">
