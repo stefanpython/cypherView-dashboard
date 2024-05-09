@@ -1,3 +1,5 @@
+import InvoiceStatus from "./Status";
+
 export default function Table({ invoices }: any) {
   console.log(invoices);
 
@@ -47,7 +49,7 @@ export default function Table({ invoices }: any) {
                       {invoice.customer.email}
                     </p>
                   </div>
-                  {/* <InvoiceStatus status={invoice.status} /> */}
+                  <InvoiceStatus status={invoice.status} />
                 </div>
                 <div className="flex w-full items-center justify-between pt-4">
                   <div>
@@ -112,7 +114,7 @@ export default function Table({ invoices }: any) {
                     {formatDate(invoice.date)}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    {/* <InvoiceStatus status={invoice.status} /> */}
+                    <InvoiceStatus status={invoice.status} />
                   </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
