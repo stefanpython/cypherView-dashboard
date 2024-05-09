@@ -1,5 +1,26 @@
 export default function Table({ invoices }: any) {
   console.log(invoices);
+
+  const formatDate = (dateString: any) => {
+    const inputDate = new Date(dateString);
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    return `${
+      months[inputDate.getMonth()]
+    } ${inputDate.getDate()}, ${inputDate.getFullYear()}`;
+  };
   return (
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
@@ -30,8 +51,8 @@ export default function Table({ invoices }: any) {
                 </div>
                 <div className="flex w-full items-center justify-between pt-4">
                   <div>
-                    <p className="text-xl font-medium">$ {invoice.amount}</p>
-                    <p>{invoice.date}</p>
+                    <p className="text-xl font-medium">${invoice.amount}</p>
+                    <p>{formatDate(invoice.date)}</p>
                   </div>
                   <div className="flex justify-end gap-2">
                     EDIT/UPDATE HERE DELETE HERE
@@ -88,7 +109,7 @@ export default function Table({ invoices }: any) {
                     ${invoice.amount}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    {invoice.date}
+                    {formatDate(invoice.date)}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
                     {/* <InvoiceStatus status={invoice.status} /> */}
