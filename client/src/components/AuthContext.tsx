@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
+import { useCookies } from "react-cookie";
 
 // Define the type for your context value
 type AuthContextType = {
@@ -18,8 +19,10 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const [cookies, setCookies] = useCookies(["token"]);
+
   // State to manage isLoggedIn
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!cookies.token);
 
   return (
     <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
