@@ -28,7 +28,7 @@ interface Invoice {
   __v: number;
 }
 
-export default function Inovices({ setSelectedTab }: InvoicesProps) {
+export default function Invoices() {
   const [cookies, setCookies] = useCookies(["token"]);
   const [invoices, setInvoices] = useState<Invoice[]>([]);
 
@@ -65,10 +65,10 @@ export default function Inovices({ setSelectedTab }: InvoicesProps) {
       </div>
       <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
         <Search />
-        <CreateInvoice setSelectedTab={setSelectedTab} />
+        <CreateInvoice />
       </div>
 
-      <Table invoices={invoices} setSelectedTab={setSelectedTab} />
+      <Table invoices={invoices} />
 
       <div className="mt-5 flex w-full justify-center">
         {/* PAGINATION HERE */}

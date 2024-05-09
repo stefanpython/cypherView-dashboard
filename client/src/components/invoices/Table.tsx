@@ -1,9 +1,8 @@
 import InvoiceStatus from "./Status";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
 
 export default function Table({ invoices, setSelectedTab }: any) {
-  console.log(invoices);
-
   const formatDate = (dateString: any) => {
     const inputDate = new Date(dateString);
     const months = [
@@ -24,6 +23,7 @@ export default function Table({ invoices, setSelectedTab }: any) {
       months[inputDate.getMonth()]
     } ${inputDate.getDate()}, ${inputDate.getFullYear()}`;
   };
+
   return (
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
@@ -58,12 +58,11 @@ export default function Table({ invoices, setSelectedTab }: any) {
                     <p>{formatDate(invoice.date)}</p>
                   </div>
                   <div className="flex justify-end gap-2">
-                    <button
-                      onClick={() => setSelectedTab("edit")}
-                      className="rounded-md border p-2 hover:bg-gray-100"
-                    >
-                      <PencilIcon className="w-5" />
-                    </button>
+                    <Link to="/dashboard/edit/:invoiceId">
+                      <button className="rounded-md border p-2 hover:bg-gray-100">
+                        <PencilIcon className="w-5" />
+                      </button>
+                    </Link>
 
                     <button className="rounded-md border p-2 hover:bg-gray-100">
                       <span className="sr-only">Delete</span>
@@ -129,12 +128,11 @@ export default function Table({ invoices, setSelectedTab }: any) {
                   </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
-                      <button
-                        onClick={() => setSelectedTab("edit")}
-                        className="rounded-md border p-2 hover:bg-gray-100"
-                      >
-                        <PencilIcon className="w-5" />
-                      </button>
+                      <Link to="/dashboard/edit/:invoiceId">
+                        <button className="rounded-md border p-2 hover:bg-gray-100">
+                          <PencilIcon className="w-5" />
+                        </button>
+                      </Link>
 
                       <button className="rounded-md border p-2 hover:bg-gray-100">
                         <span className="sr-only">Delete</span>

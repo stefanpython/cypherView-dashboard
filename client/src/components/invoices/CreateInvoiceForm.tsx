@@ -5,7 +5,7 @@ interface InvoicesProps {
   setSelectedTab: Dispatch<SetStateAction<string>>;
 }
 
-export default function CreateInvoiceForm({ setSelectedTab }: InvoicesProps) {
+export default function CreateInvoiceForm() {
   return (
     <div>
       <div className="flex w-full items-center justify-between">
@@ -135,12 +135,12 @@ export default function CreateInvoiceForm({ setSelectedTab }: InvoicesProps) {
           </fieldset>
         </div>
         <div className="mt-6 flex justify-end gap-4">
-          <button
-            onClick={() => setSelectedTab("invoices")}
-            className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
-          >
-            Cancel
-          </button>
+          <Link to="/dashboard/invoices">
+            <button className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200">
+              Cancel
+            </button>
+          </Link>
+
           <button
             className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
             type="submit"

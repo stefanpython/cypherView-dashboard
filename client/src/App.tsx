@@ -3,8 +3,6 @@ import Welcome from "./components/Welcome";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import { useAuth } from "./components/AuthContext";
-import CreateInvoiceForm from "./components/invoices/CreateInvoiceForm";
-import EditForm from "./components/invoices/EditForm";
 
 function App() {
   const { isLoggedIn } = useAuth();
@@ -24,7 +22,7 @@ function App() {
           />
 
           <Route
-            path="/dashboard"
+            path="/dashboard/*"
             element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />}
           />
         </Routes>

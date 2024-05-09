@@ -7,10 +7,12 @@ import { useCookies } from "react-cookie";
 import { useAuth } from "./AuthContext";
 import { useState } from "react";
 import Home from "./dashboard/Home";
-import Inovices from "./dashboard/Inovices";
+import Invoices from "./dashboard/Inovices";
 import Customers from "./dashboard/Customers";
 import CreateInvoiceForm from "./invoices/CreateInvoiceForm";
 import EditForm from "./invoices/EditForm";
+
+import { HashRouter, Routes, Route } from "react-router-dom";
 
 const MenuItem = ({ icon: Icon, label, selected, onClick }: any) => {
   // Define the base class name for the menu item
@@ -63,24 +65,21 @@ export default function Dashboard() {
             </div>
           </Link>
           <div className="flex grow flex-row justify-between space-x-2 md:flex-col md:space-x-0 md:space-y-2">
-            <MenuItem
-              icon={IoHomeOutline}
-              label="Home"
-              selected={selectedTab === "home"}
-              onClick={() => setSelectedTab("home")}
-            />
-            <MenuItem
-              icon={LiaFileInvoiceDollarSolid}
-              label="Invoices"
-              selected={selectedTab === "invoices"}
-              onClick={() => setSelectedTab("invoices")}
-            />
-            <MenuItem
-              icon={PiUsersThreeLight}
-              label="Customers"
-              selected={selectedTab === "customers"}
-              onClick={() => setSelectedTab("customers")}
-            />
+            <Link to="/">
+              <MenuItem
+                icon={IoHomeOutline}
+                label="Home"
+                selected={selectedTab === "home"}
+              />
+            </Link>
+
+            <Link to="/dashboard/invoices">
+              <MenuItem icon={LiaFileInvoiceDollarSolid} label="Invoices" />
+            </Link>
+
+            <Link to="/dashboard/customers">
+              <MenuItem icon={PiUsersThreeLight} label="Customers" />
+            </Link>
             <div className="hidden h-auto w-full grow rounded-md bg-gray-50 md:block"></div>
             <button
               onClick={handleSignOut}
@@ -94,16 +93,13 @@ export default function Dashboard() {
       </div>
 
       <div className="flex-grow p-6 md:overflow-y-auto md:p-12 bg-white">
-        {selectedTab === "home" && <Home />}
-
-        {selectedTab === "invoices" && (
-          <Inovices setSelectedTab={setSelectedTab} />
-        )}
-        {selectedTab === "customers" && <Customers />}
-        {selectedTab === "create" && (
-          <CreateInvoiceForm setSelectedTab={setSelectedTab} />
-        )}
-        {selectedTab === "edit" && <EditForm setSelectedTab={setSelectedTab} />}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/invoices" element={<Invoices />} />
+          <Route path="/customers" element={<Customers />} />
+          <Route path="/create" element={<CreateInvoiceForm />} />
+          <Route path="/edit/:invoiceId" element={<EditForm />} />
+        </Routes>
       </div>
     </div>
   );
