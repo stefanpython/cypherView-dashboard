@@ -1,7 +1,7 @@
 import InvoiceStatus from "./Status";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 
-export default function Table({ invoices }: any) {
+export default function Table({ invoices, setSelectedTab }: any) {
   console.log(invoices);
 
   const formatDate = (dateString: any) => {
@@ -58,9 +58,12 @@ export default function Table({ invoices }: any) {
                     <p>{formatDate(invoice.date)}</p>
                   </div>
                   <div className="flex justify-end gap-2">
-                    <a className="rounded-md border p-2 hover:bg-gray-100">
+                    <button
+                      onClick={() => setSelectedTab("edit")}
+                      className="rounded-md border p-2 hover:bg-gray-100"
+                    >
                       <PencilIcon className="w-5" />
-                    </a>
+                    </button>
 
                     <button className="rounded-md border p-2 hover:bg-gray-100">
                       <span className="sr-only">Delete</span>
@@ -126,9 +129,12 @@ export default function Table({ invoices }: any) {
                   </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
-                      <a className="rounded-md border p-2 hover:bg-gray-100">
+                      <button
+                        onClick={() => setSelectedTab("edit")}
+                        className="rounded-md border p-2 hover:bg-gray-100"
+                      >
                         <PencilIcon className="w-5" />
-                      </a>
+                      </button>
 
                       <button className="rounded-md border p-2 hover:bg-gray-100">
                         <span className="sr-only">Delete</span>

@@ -103,7 +103,7 @@ export default function Dashboard() {
         {selectedTab === "create" && (
           <CreateInvoiceForm setSelectedTab={setSelectedTab} />
         )}
-        {selectedTab === "edit" && <EditForm />}
+        {selectedTab === "edit" && <EditForm setSelectedTab={setSelectedTab} />}
       </div>
     </div>
   );

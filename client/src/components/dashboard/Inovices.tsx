@@ -68,7 +68,7 @@ export default function Inovices({ setSelectedTab }: InvoicesProps) {
         <CreateInvoice setSelectedTab={setSelectedTab} />
       </div>
 
-      <Table invoices={invoices} />
+      <Table invoices={invoices} setSelectedTab={setSelectedTab} />
 
       <div className="mt-5 flex w-full justify-center">
         {/* PAGINATION HERE */}
