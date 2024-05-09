@@ -27,16 +27,6 @@ function App() {
             path="/dashboard"
             element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />}
           />
-
-          <Route
-            path="dashboard/invoice/create"
-            element={<CreateInvoiceForm />}
-          />
-
-          <Route
-            path="dashboard/invoice/edit/:invoiceId"
-            element={<EditForm />}
-          />
         </Routes>
       </HashRouter>
     </div>

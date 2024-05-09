@@ -1,14 +1,18 @@
 import { AiOutlinePlus } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Dispatch, SetStateAction } from "react";
 
-export default function CreateInvoice() {
+interface InvoicesProps {
+  setSelectedTab: Dispatch<SetStateAction<string>>;
+}
+
+export default function CreateInvoice({ setSelectedTab }: InvoicesProps) {
   return (
-    <Link
-      to="invoice/create"
+    <button
+      onClick={() => setSelectedTab("create")}
       className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
     >
       <span className="hidden md:block">Create Invoice</span>{" "}
       <AiOutlinePlus className="h-5 md:ml-4" />
-    </Link>
+    </button>
   );
 }

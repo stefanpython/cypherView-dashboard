@@ -9,6 +9,8 @@ import { useState } from "react";
 import Home from "./dashboard/Home";
 import Inovices from "./dashboard/Inovices";
 import Customers from "./dashboard/Customers";
+import CreateInvoiceForm from "./invoices/CreateInvoiceForm";
+import EditForm from "./invoices/EditForm";
 
 const MenuItem = ({ icon: Icon, label, selected, onClick }: any) => {
   // Define the base class name for the menu item
@@ -93,8 +95,15 @@ export default function Dashboard() {
 
       <div className="flex-grow p-6 md:overflow-y-auto md:p-12 bg-white">
         {selectedTab === "home" && <Home />}
-        {selectedTab === "invoices" && <Inovices />}
+
+        {selectedTab === "invoices" && (
+          <Inovices setSelectedTab={setSelectedTab} />
+        )}
         {selectedTab === "customers" && <Customers />}
+        {selectedTab === "create" && (
+          <CreateInvoiceForm setSelectedTab={setSelectedTab} />
+        )}
+        {selectedTab === "edit" && <EditForm />}
       </div>
     </div>
   );
