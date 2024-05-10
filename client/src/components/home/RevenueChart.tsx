@@ -3,12 +3,20 @@ import { useState, useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
 import { useCookies } from "react-cookie";
 
+interface Invoice {
+  _id: string;
+  amount: number;
+  date: string;
+}
+
 export default function RevenueChart() {
   const chartRef = useRef(null);
 
   const [cookies, setCookies] = useCookies(["token"]);
-  const [invoices, setInvoices] = useState([]);
-  const [revenueData, setRevenueData] = useState([]);
+  const [invoices, setInvoices] = useState<Invoice[]>([]);
+  const [revenueData, setRevenueData] = useState<
+    { month: string; revenue: number }[]
+  >([]);
 
   // Fetch Invoices
   const fetchInvoices = async () => {
