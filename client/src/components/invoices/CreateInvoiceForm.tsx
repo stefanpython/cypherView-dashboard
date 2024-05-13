@@ -1,17 +1,94 @@
-import { Link } from "react-router-dom";
-import { Dispatch, SetStateAction } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useCookies } from "react-cookie";
 
-interface InvoicesProps {
-  setSelectedTab: Dispatch<SetStateAction<string>>;
+import {
+  CheckIcon,
+  ClockIcon,
+  CurrencyDollarIcon,
+  UserCircleIcon,
+} from "@heroicons/react/24/outline";
+
+interface Customer {
+  _id: string;
+  firstName: string;
+  lastName: string;
 }
 
 export default function CreateInvoiceForm() {
+  const [cookies, setCookies] = useCookies(["token"]);
+  const [customers, setCustomers] = useState<Customer[]>();
+
+  const [customer, setCustomer] = useState<string | undefined>();
+  const [amount, setAmount] = useState<string | undefined>();
+  const [status, setStatus] = useState<string | undefined>();
+
+  const navigate = useNavigate();
+
+  // Fetch all customers
+  const fetchCustomers = async () => {
+    try {
+      const res = await fetch("http://localhost:3000/customers", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.token}`,
+        },
+      });
+
+      if (!res.ok) {
+        const customerData = await res.json();
+        throw new Error(customerData.message);
+      }
+
+      const data = await res.json();
+      setCustomers(data.customers);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCustomers();
+  }, []);
+
+  // Handle submit
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch(`http://localhost:3000/invoices`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.token}`,
+        },
+        body: JSON.stringify({ customer, amount, status }),
+      });
+
+      if (!res.ok) {
+        const invoiceData = await res.json();
+        throw new Error(invoiceData.message);
+      }
+
+      const createdData = await res.json();
+      console.log("Invoice created successfully:", createdData);
+
+      window.alert("Invoice created successfully!");
+
+      navigate("/dashboard/invoices", { replace: true });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(typeof customer);
+
   return (
     <div>
       <div className="flex w-full items-center justify-between">
         <h1 className={`text-2xl`}>Invoices/Create</h1>
       </div>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="rounded-md bg-gray-50 p-4 md:p-6">
           {/* Customer Name */}
           <div className="mb-4">
@@ -27,18 +104,20 @@ export default function CreateInvoiceForm() {
                 name="customerId"
                 className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 defaultValue=""
-                aria-describedby="customer-error"
+                value={customer}
+                onChange={(e) => setCustomer(e.target.value)}
               >
                 <option value="" disabled>
                   Select a customer
                 </option>
-                {/* {customers.map((customer) => (
-            <option key={customer.id} value={customer.id}>
-              {customer.name}
-            </option>
-          ))} */}
+                {customers &&
+                  customers.map((customer) => (
+                    <option key={customer._id} value={customer._id}>
+                      {customer.firstName} {customer.lastName}
+                    </option>
+                  ))}
               </select>
-              {/* <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" /> */}
+              <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
             </div>
 
             <div id="customer-error" aria-live="polite" aria-atomic="true">
@@ -66,8 +145,9 @@ export default function CreateInvoiceForm() {
                   placeholder="Enter USD amount"
                   className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                   aria-describedby="amount-error"
+                  onChange={(e) => setAmount(e.target.value)}
                 />
-                {/* <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" /> */}
+                <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
               </div>
             </div>
 
@@ -96,13 +176,14 @@ export default function CreateInvoiceForm() {
                     value="pending"
                     className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
                     aria-describedby="status-error"
+                    onChange={(e) => setStatus(e.target.value)}
                   />
                   <label
                     htmlFor="pending"
                     className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600"
                   >
                     Pending
-                    {/* <ClockIcon className="h-4 w-4" /> */}
+                    <ClockIcon className="h-4 w-4" />
                   </label>
                 </div>
                 <div className="flex items-center">
@@ -112,13 +193,14 @@ export default function CreateInvoiceForm() {
                     type="radio"
                     value="paid"
                     className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                    onChange={(e) => setStatus(e.target.value)}
                   />
                   <label
                     htmlFor="paid"
                     className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-green-500 px-3 py-1.5 text-xs font-medium text-white"
                   >
                     Paid
-                    {/* <CheckIcon className="h-4 w-4" /> */}
+                    <CheckIcon className="h-4 w-4" />
                   </label>
                 </div>
               </div>

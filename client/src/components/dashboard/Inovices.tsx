@@ -1,12 +1,8 @@
 import Search from "../invoices/Search";
 import CreateInvoice from "../invoices/CreateInvoice";
 import Table from "../invoices/Table";
-import { Dispatch, SetStateAction, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
-
-interface InvoicesProps {
-  setSelectedTab: Dispatch<SetStateAction<string>>;
-}
 
 interface Invoice {
   _id: string;

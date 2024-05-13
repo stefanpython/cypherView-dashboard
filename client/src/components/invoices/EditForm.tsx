@@ -6,12 +6,8 @@ import {
 } from "@heroicons/react/24/outline";
 import { Link, useParams, useNavigate } from "react-router-dom";
 
-import { Dispatch, SetStateAction, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
-
-interface InvoicesProps {
-  setSelectedTab: Dispatch<SetStateAction<string>>;
-}
 
 interface Invoice {
   amount: number;

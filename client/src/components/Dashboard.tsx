@@ -78,7 +78,7 @@ export default function Dashboard() {
               <MenuItem
                 icon={LiaFileInvoiceDollarSolid}
                 label="Invoices"
-                selected={selectedTab === "Invoices"}
+                selected={selectedTab === "invoices"}
                 onClick={() => setSelectedTab("invoices")}
               />
             </Link>
@@ -87,7 +87,7 @@ export default function Dashboard() {
               <MenuItem
                 icon={PiUsersThreeLight}
                 label="Customers"
-                selected={selectedTab === "Customers"}
+                selected={selectedTab === "customers"}
                 onClick={() => setSelectedTab("customers")}
               />
             </Link>
