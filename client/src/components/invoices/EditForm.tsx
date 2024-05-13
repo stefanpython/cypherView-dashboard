@@ -4,7 +4,7 @@ import {
   CurrencyDollarIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
 import { Dispatch, SetStateAction, useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
@@ -30,7 +30,11 @@ export default function EditForm() {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [invoice, setInvoice] = useState<Invoice | undefined>();
 
+  const [amount, setAmount] = useState<string | undefined>();
+  const [status, setStatus] = useState<string | undefined>();
+
   const { invoiceId } = useParams();
+  const navigate = useNavigate();
 
   //
 
@@ -78,40 +82,44 @@ export default function EditForm() {
     }
   };
 
-  // Fetch customer by id
-  // const fetchCustomerById = async () => {
-  //   try {
-  //     const res = await fetch(
-  //       `http://localhost:3000/customers/${invoice?.customer}`,
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${cookies.token}`,
-  //         },
-  //       }
-  //     );
+  // Handle submit
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-  //     if (!res.ok) {
-  //       const customerData = await res.json();
-  //       throw new Error(customerData.message);
-  //     }
+    try {
+      const res = await fetch(`http://localhost:3000/invoices/${invoiceId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.token}`,
+        },
+        body: JSON.stringify({ amount, status }),
+      });
 
-  //     const data = await res.json();
-  //     setSingleCustomer(data.customer);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+      if (!res.ok) {
+        const customerData = await res.json();
+        throw new Error(customerData.message);
+      }
+
+      const updatedData = await res.json();
+      console.log("Product updated successfully:", updatedData);
+
+      window.alert("Invoice updated successfully!");
+
+      navigate("/dashboard/invoices", { replace: true });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     fetchCustomers();
     fetchInvoiceById();
-    // fetchCustomerById();
   }, []);
 
   return (
     <div>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="rounded-md bg-gray-50 p-4 md:p-6">
           {/* Customer Name */}
           <div className="mb-4">
@@ -155,6 +163,7 @@ export default function EditForm() {
                   type="number"
                   step="0.01"
                   defaultValue={invoice?.amount}
+                  onChange={(e) => setAmount(e.target.value)}
                   placeholder="Enter USD amount"
                   className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 />
@@ -177,6 +186,7 @@ export default function EditForm() {
                     type="radio"
                     value="pending"
                     defaultChecked={invoice && invoice?.status === "pending"}
+                    onChange={(e) => setStatus(e.target.value)}
                     className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
                   />
                   <label
@@ -193,6 +203,7 @@ export default function EditForm() {
                     type="radio"
                     value="paid"
                     defaultChecked={invoice && invoice?.status === "paid"}
+                    onChange={(e) => setStatus(e.target.value)}
                     className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
                   />
                   <label
