@@ -62,7 +62,7 @@ exports.get_all_invoices = async (req, res) => {
 // Get details for an invoice based on ID
 exports.get_invoice_details = [
   // Validate customer ID
-  param("invoiceId").isMongoId().withMessage("Invalid customer ID"),
+  param("invoiceId").isMongoId().withMessage("Invalid invoice ID"),
 
   async (req, res) => {
     // Check for validation errors

@@ -4,7 +4,7 @@ import {
   CurrencyDollarIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import { Dispatch, SetStateAction, useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
@@ -13,11 +13,50 @@ interface InvoicesProps {
   setSelectedTab: Dispatch<SetStateAction<string>>;
 }
 
+interface Invoice {
+  amount: number;
+  status: string;
+  customer: string;
+}
+
+interface Customer {
+  _id: string;
+  firstName: string;
+  lastName: string;
+}
+
 export default function EditForm() {
   const [cookies, setCookies] = useCookies(["token"]);
-  const [customers, setCustomers] = useState([]);
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [invoice, setInvoice] = useState<Invoice | undefined>();
 
-  // Fetch customers
+  const { invoiceId } = useParams();
+
+  //
+
+  // Fetch invoice details by id
+  const fetchInvoiceById = async () => {
+    try {
+      const res = await fetch(`http://localhost:3000/invoices/${invoiceId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.token}`,
+        },
+      });
+
+      if (!res.ok) {
+        const invoiceData = await res.json();
+        throw new Error(invoiceData.message);
+      }
+
+      const data = await res.json();
+      setInvoice(data.invoice);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Fetch all customers
   const fetchCustomers = async () => {
     try {
       const res = await fetch("http://localhost:3000/customers", {
@@ -39,11 +78,36 @@ export default function EditForm() {
     }
   };
 
+  // Fetch customer by id
+  // const fetchCustomerById = async () => {
+  //   try {
+  //     const res = await fetch(
+  //       `http://localhost:3000/customers/${invoice?.customer}`,
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${cookies.token}`,
+  //         },
+  //       }
+  //     );
+
+  //     if (!res.ok) {
+  //       const customerData = await res.json();
+  //       throw new Error(customerData.message);
+  //     }
+
+  //     const data = await res.json();
+  //     setSingleCustomer(data.customer);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
   useEffect(() => {
     fetchCustomers();
+    fetchInvoiceById();
+    // fetchCustomerById();
   }, []);
-
-  console.log(customers);
 
   return (
     <div>
@@ -61,17 +125,18 @@ export default function EditForm() {
               <select
                 id="customer"
                 name="customerId"
+                value={invoice?.customer}
                 className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                // defaultValue={invoice.customer_id}
               >
                 <option value="" disabled>
                   Select a customer
                 </option>
-                {customers.map((customer) => (
-                  <option key={customer._id} value={customer.id}>
-                    {customer.firstName} {customer.lastName}
-                  </option>
-                ))}
+                {customers &&
+                  customers.map((customer) => (
+                    <option key={customer._id} value={customer._id}>
+                      {customer.firstName} {customer.lastName}
+                    </option>
+                  ))}
               </select>
               <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
             </div>
@@ -89,7 +154,7 @@ export default function EditForm() {
                   name="amount"
                   type="number"
                   step="0.01"
-                  // defaultValue={invoice.amount}
+                  defaultValue={invoice?.amount}
                   placeholder="Enter USD amount"
                   className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 />
@@ -111,7 +176,7 @@ export default function EditForm() {
                     name="status"
                     type="radio"
                     value="pending"
-                    // defaultChecked={invoice.status === 'pending'}
+                    defaultChecked={invoice && invoice?.status === "pending"}
                     className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
                   />
                   <label
@@ -127,7 +192,7 @@ export default function EditForm() {
                     name="status"
                     type="radio"
                     value="paid"
-                    // defaultChecked={invoice.status === 'paid'}
+                    defaultChecked={invoice && invoice?.status === "paid"}
                     className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
                   />
                   <label

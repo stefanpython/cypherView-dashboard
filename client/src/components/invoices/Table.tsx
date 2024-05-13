@@ -128,7 +128,7 @@ export default function Table({ invoices, setSelectedTab }: any) {
                   </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
-                      <Link to="/dashboard/edit/:invoiceId">
+                      <Link to={`/dashboard/edit/${invoice._id}`}>
                         <button className="rounded-md border p-2 hover:bg-gray-100">
                           <PencilIcon className="w-5" />
                         </button>

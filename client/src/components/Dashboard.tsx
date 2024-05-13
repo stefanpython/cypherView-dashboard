@@ -12,7 +12,7 @@ import Customers from "./dashboard/Customers";
 import CreateInvoiceForm from "./invoices/CreateInvoiceForm";
 import EditForm from "./invoices/EditForm";
 
-import { HashRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 const MenuItem = ({ icon: Icon, label, selected, onClick }: any) => {
   // Define the base class name for the menu item
@@ -70,15 +70,26 @@ export default function Dashboard() {
                 icon={IoHomeOutline}
                 label="Home"
                 selected={selectedTab === "home"}
+                onClick={() => setSelectedTab("home")}
               />
             </Link>
 
             <Link to="/dashboard/invoices">
-              <MenuItem icon={LiaFileInvoiceDollarSolid} label="Invoices" />
+              <MenuItem
+                icon={LiaFileInvoiceDollarSolid}
+                label="Invoices"
+                selected={selectedTab === "Invoices"}
+                onClick={() => setSelectedTab("invoices")}
+              />
             </Link>
 
             <Link to="/dashboard/customers">
-              <MenuItem icon={PiUsersThreeLight} label="Customers" />
+              <MenuItem
+                icon={PiUsersThreeLight}
+                label="Customers"
+                selected={selectedTab === "Customers"}
+                onClick={() => setSelectedTab("customers")}
+              />
             </Link>
             <div className="hidden h-auto w-full grow rounded-md bg-gray-50 md:block"></div>
             <button
