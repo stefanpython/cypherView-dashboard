@@ -71,7 +71,7 @@ export default function Invoices() {
         <CreateInvoice />
       </div>
 
-      <Table invoices={filteredInvoices} />
+      <Table invoices={filteredInvoices} setInvoices={setInvoices} />
 
       <div className="mt-5 flex w-full justify-center">
         {/* PAGINATION HERE */}

@@ -1,11 +1,15 @@
 import InvoiceStatus from "./Status";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
 
-export default function Table({ invoices, setSelectedTab }: any) {
+export default function Table({ invoices, setSelectedTab, setInvoices }: any) {
+  const [cookies, setCookies] = useCookies(["token"]);
+
   // Reverse the invoices array once before rendering
   const reversedInvoices = invoices.slice().reverse();
 
+  // Format date
   const formatDate = (dateString: any) => {
     const inputDate = new Date(dateString);
     const months = [
@@ -25,6 +29,38 @@ export default function Table({ invoices, setSelectedTab }: any) {
     return `${
       months[inputDate.getMonth()]
     } ${inputDate.getDate()}, ${inputDate.getFullYear()}`;
+  };
+
+  // Handle delete function
+  const handleDelete = async (id: string) => {
+    try {
+      const confirmation = window.confirm("Are you sure?");
+
+      if (confirmation) {
+        const res = await fetch(`http://localhost:3000/invoices/${id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${cookies.token}`,
+          },
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to delete invoice");
+        }
+
+        // If deletion is successful, remove the invoice from the state
+        setInvoices((prevInvoices: any) =>
+          prevInvoices.filter((invoice: any) => invoice._id !== id)
+        );
+
+        window.alert("Invoice deleted successfully!");
+      } else {
+        return;
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -67,7 +103,10 @@ export default function Table({ invoices, setSelectedTab }: any) {
                       </button>
                     </Link>
 
-                    <button className="rounded-md border p-2 hover:bg-gray-100">
+                    <button
+                      onClick={() => handleDelete(invoice._id)}
+                      className="rounded-md border p-2 hover:bg-gray-100"
+                    >
                       <span className="sr-only">Delete</span>
                       <TrashIcon className="w-4" />
                     </button>
@@ -137,7 +176,10 @@ export default function Table({ invoices, setSelectedTab }: any) {
                         </button>
                       </Link>
 
-                      <button className="rounded-md border p-2 hover:bg-gray-100">
+                      <button
+                        onClick={() => handleDelete(invoice._id)}
+                        className="rounded-md border p-2 hover:bg-gray-100"
+                      >
                         <span className="sr-only">Delete</span>
                         <TrashIcon className="w-4" />
                       </button>
