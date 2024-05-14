@@ -81,8 +81,6 @@ export default function CreateInvoiceForm() {
     }
   };
 
-  console.log(typeof customer);
-
   return (
     <div>
       <div className="flex w-full items-center justify-between">

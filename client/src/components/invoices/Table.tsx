@@ -3,6 +3,9 @@ import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 
 export default function Table({ invoices, setSelectedTab }: any) {
+  // Reverse the invoices array once before rendering
+  const reversedInvoices = invoices.slice().reverse();
+
   const formatDate = (dateString: any) => {
     const inputDate = new Date(dateString);
     const months = [
@@ -29,7 +32,7 @@ export default function Table({ invoices, setSelectedTab }: any) {
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
           <div className="md:hidden">
-            {invoices?.map((invoice: any) => (
+            {reversedInvoices?.map((invoice: any) => (
               <div
                 key={invoice._id}
                 className="mb-2 w-full rounded-md bg-white p-4"
@@ -97,7 +100,7 @@ export default function Table({ invoices, setSelectedTab }: any) {
               </tr>
             </thead>
             <tbody className="bg-white">
-              {invoices?.map((invoice: any) => (
+              {reversedInvoices?.map((invoice: any) => (
                 <tr
                   key={invoice._id}
                   className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
