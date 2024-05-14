@@ -32,8 +32,6 @@ export default function EditForm() {
   const { invoiceId } = useParams();
   const navigate = useNavigate();
 
-  //
-
   // Fetch invoice details by id
   const fetchInvoiceById = async () => {
     try {

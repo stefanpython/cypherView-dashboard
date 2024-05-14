@@ -71,7 +71,6 @@ export default function CreateInvoiceForm() {
       }
 
       const createdData = await res.json();
-      console.log("Invoice created successfully:", createdData);
 
       window.alert("Invoice created successfully!");
 
