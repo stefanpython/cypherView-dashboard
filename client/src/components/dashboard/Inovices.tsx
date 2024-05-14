@@ -27,6 +27,7 @@ interface Invoice {
 export default function Invoices() {
   const [cookies, setCookies] = useCookies(["token"]);
   const [invoices, setInvoices] = useState<Invoice[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   // Fetch Invoices
   const fetchInvoices = async () => {
@@ -54,17 +55,23 @@ export default function Invoices() {
     fetchInvoices();
   }, []);
 
+  // Filter invoices based on search query
+  const filteredInvoices = invoices.filter((invoice) => {
+    const fullName = `${invoice.customer.firstName} ${invoice.customer.lastName}`;
+    return fullName.toLowerCase().includes(searchQuery.toLowerCase());
+  });
+
   return (
     <div className="w-full">
       <div className="flex w-full items-center justify-between">
         <h1 className={`text-2xl`}>Invoices</h1>
       </div>
       <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
-        <Search />
+        <Search setSearchQuery={setSearchQuery} />
         <CreateInvoice />
       </div>
 
-      <Table invoices={invoices} />
+      <Table invoices={filteredInvoices} />
 
       <div className="mt-5 flex w-full justify-center">
         {/* PAGINATION HERE */}
