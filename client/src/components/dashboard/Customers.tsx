@@ -3,6 +3,7 @@ import CustomersTable from "../customers/CustomersTable";
 import SearchCustomers from "../customers/SearchCustomers";
 import { useCookies } from "react-cookie";
 import { useState, useEffect } from "react";
+import ReactPaginate from "react-paginate";
 
 interface Customer {
   _id: string;
@@ -15,8 +16,10 @@ interface Customer {
 export default function Customers() {
   const [cookies, setCookies] = useCookies(["token"]);
   const [customers, setCustomers] = useState<Customer[]>([]);
-
   const [searchQuery, setSearchQuery] = useState<string>("");
+
+  const [pageNumber, setPageNumber] = useState(0);
+  const customersPerPage = 5;
 
   // Fetch Customers List
   const fetchCustomers = async () => {
@@ -50,6 +53,17 @@ export default function Customers() {
     return fullName.toLowerCase().includes(searchQuery.toLowerCase());
   });
 
+  // Handle page change
+  const handlePageChange = ({ selected }: { selected: number }) => {
+    setPageNumber(selected);
+  };
+
+  const pageCount = Math.ceil(customers.length / customersPerPage);
+
+  const displayCustomers = filteredInvoices
+    .slice(pageNumber * customersPerPage, (pageNumber + 1) * customersPerPage)
+    .map((invoice) => invoice);
+
   return (
     <div className="w-full">
       <div className="flex w-full items-center justify-between">
@@ -60,10 +74,23 @@ export default function Customers() {
         <CreateCustomer />
       </div>
 
-      <CustomersTable customers={filteredInvoices} />
+      <CustomersTable customers={displayCustomers} />
 
       <div className="mt-5 flex w-full justify-center">
-        {/* PAGINATION HERE */}
+        <ReactPaginate
+          previousLabel={"Previous"}
+          nextLabel={"Next"}
+          breakLabel={"..."}
+          pageCount={pageCount}
+          onPageChange={handlePageChange}
+          containerClassName={"flex items-center justify-center mt-6"}
+          pageClassName={"mx-1"}
+          previousLinkClassName={"border border-gray-300 px-3 py-1 rounded-sm"}
+          nextLinkClassName={"border border-gray-300 px-3 py-1 rounded-sm"}
+          pageLinkClassName={"border border-gray-300 px-3 py-1 rounded-sm"}
+          activeClassName={"bg-blue-500 text-white rounded-sm"}
+          disabledClassName={"text-gray-400"}
+        />
       </div>
     </div>
   );
