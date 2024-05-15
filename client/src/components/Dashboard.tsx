@@ -13,6 +13,7 @@ import CreateInvoiceForm from "./invoices/CreateInvoiceForm";
 import EditForm from "./invoices/EditForm";
 
 import { Routes, Route } from "react-router-dom";
+import CreateCustomerForm from "./customers/CreateCustomerForm";
 
 const MenuItem = ({ icon: Icon, label, selected, onClick }: any) => {
   // Define the base class name for the menu item
@@ -60,7 +61,7 @@ export default function Dashboard() {
             to="/"
           >
             <div className="w-32 text-white md:w-40 flex items-center">
-              <img className="w-8 mr-1" src="./eye.png" alt="eye logo" />
+              <img className="w-12 h-12 mr-1" src="./eye.png" alt="eye logo" />
               <p className="text-xl font-medium"> CypherView</p>
             </div>
           </Link>
@@ -107,9 +108,11 @@ export default function Dashboard() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/invoices" element={<Invoices />} />
-          <Route path="/customers" element={<Customers />} />
           <Route path="/create" element={<CreateInvoiceForm />} />
           <Route path="/edit/:invoiceId" element={<EditForm />} />
+
+          <Route path="/customers" element={<Customers />} />
+          <Route path="/customers/create" element={<CreateCustomerForm />} />
         </Routes>
       </div>
     </div>
