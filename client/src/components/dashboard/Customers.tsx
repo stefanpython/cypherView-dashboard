@@ -4,9 +4,19 @@ import SearchCustomers from "../customers/SearchCustomers";
 import { useCookies } from "react-cookie";
 import { useState, useEffect } from "react";
 
+interface Customer {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  image: string;
+}
+
 export default function Customers() {
   const [cookies, setCookies] = useCookies(["token"]);
-  const [customers, setCustomers] = useState([]);
+  const [customers, setCustomers] = useState<Customer[]>([]);
+
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   // Fetch Customers List
   const fetchCustomers = async () => {
@@ -34,18 +44,23 @@ export default function Customers() {
     fetchCustomers();
   }, []);
 
-  console.log(customers);
+  // Filter customers based on search query
+  const filteredInvoices = customers.filter((customer) => {
+    const fullName = `${customer.firstName} ${customer.lastName}`;
+    return fullName.toLowerCase().includes(searchQuery.toLowerCase());
+  });
+
   return (
     <div className="w-full">
       <div className="flex w-full items-center justify-between">
         <h1 className={`text-2xl`}>Customers</h1>
       </div>
       <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
-        <SearchCustomers />
+        <SearchCustomers setSearchQuery={setSearchQuery} />
         <CreateCustomer />
       </div>
 
-      <CustomersTable customers={customers} />
+      <CustomersTable customers={filteredInvoices} />
 
       <div className="mt-5 flex w-full justify-center">
         {/* PAGINATION HERE */}
