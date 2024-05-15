@@ -14,6 +14,7 @@ import EditForm from "./invoices/EditForm";
 
 import { Routes, Route } from "react-router-dom";
 import CreateCustomerForm from "./customers/CreateCustomerForm";
+import EditCustomerForm from "./customers/EditCustomerForm";
 
 const MenuItem = ({ icon: Icon, label, selected, onClick }: any) => {
   // Define the base class name for the menu item
@@ -113,6 +114,10 @@ export default function Dashboard() {
 
           <Route path="/customers" element={<Customers />} />
           <Route path="/customers/create" element={<CreateCustomerForm />} />
+          <Route
+            path="/customers/edit/:customerId"
+            element={<EditCustomerForm />}
+          />
         </Routes>
       </div>
     </div>

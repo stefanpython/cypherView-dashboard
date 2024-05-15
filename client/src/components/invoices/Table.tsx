@@ -97,7 +97,7 @@ export default function Table({ invoices, setSelectedTab, setInvoices }: any) {
                     <p>{formatDate(invoice.date)}</p>
                   </div>
                   <div className="flex justify-end gap-2">
-                    <Link to="/dashboard/edit/:invoiceId">
+                    <Link to={`/dashboard/edit/${invoice._id}`}>
                       <button className="rounded-md border p-2 hover:bg-gray-100">
                         <PencilIcon className="w-5" />
                       </button>
