@@ -41,7 +41,7 @@ export default function LatestInvoices() {
       }
 
       const data = await res.json();
-      setInvoices(data.invoices);
+      setInvoices(data.invoices.reverse());
     } catch (error) {
       console.log(error);
     }
@@ -51,15 +51,13 @@ export default function LatestInvoices() {
     fetchInvoices();
   }, []);
 
-  // console.log(invoices);
-
   return (
     <div className="flex w-full flex-col md:col-span-4">
       <h2 className="mb-4 text-xl md:text-2xl">Latest Invoices</h2>
       <div className="flex-grow flex-col justify-between rounded-xl bg-gray-50 p-4">
         <div className="bg-white px-6">
           {invoices &&
-            invoices.slice(-5).map(
+            invoices.slice(0, 5).map(
               (
                 invoice: Invoice // Provide type for invoice
               ) => (

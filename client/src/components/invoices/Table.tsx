@@ -3,11 +3,8 @@ import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
 
-export default function Table({ invoices, setSelectedTab, setInvoices }: any) {
+export default function Table({ invoices, setInvoices }: any) {
   const [cookies, setCookies] = useCookies(["token"]);
-
-  // Reverse the invoices array once before rendering
-  const reversedInvoices = invoices.slice().reverse();
 
   // Format date
   const formatDate = (dateString: any) => {
@@ -68,7 +65,7 @@ export default function Table({ invoices, setSelectedTab, setInvoices }: any) {
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
           <div className="md:hidden">
-            {reversedInvoices?.map((invoice: any) => (
+            {invoices?.map((invoice: any) => (
               <div
                 key={invoice._id}
                 className="mb-2 w-full rounded-md bg-white p-4"
@@ -139,7 +136,7 @@ export default function Table({ invoices, setSelectedTab, setInvoices }: any) {
               </tr>
             </thead>
             <tbody className="bg-white">
-              {reversedInvoices?.map((invoice: any) => (
+              {invoices?.map((invoice: any) => (
                 <tr
                   key={invoice._id}
                   className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"

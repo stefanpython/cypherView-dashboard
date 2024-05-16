@@ -49,7 +49,7 @@ export default function Invoices() {
       }
 
       const data = await res.json();
-      setInvoices(data.invoices);
+      setInvoices(data.invoices.reverse());
     } catch (error) {
       console.log(error);
     }
