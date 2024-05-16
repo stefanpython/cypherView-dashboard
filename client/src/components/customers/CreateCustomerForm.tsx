@@ -4,7 +4,7 @@ export default function CreateCustomerForm() {
   return (
     <div>
       <div className="flex w-full items-center justify-between">
-        <h1 className={`text-2xl`}>Invoices/Create</h1>
+        <h1 className={`text-2xl`}>Customers/Create</h1>
       </div>
 
       <form>
