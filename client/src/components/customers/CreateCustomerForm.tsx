@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useCookies } from "react-cookie";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function CreateCustomerForm() {
   const [cookies, setCookies] = useCookies(["token"]);
@@ -10,6 +10,8 @@ export default function CreateCustomerForm() {
     email: "",
     image: "",
   });
+
+  const navigate = useNavigate();
 
   // Handle input change
   const handleChange = (e: any) => {
@@ -64,6 +66,8 @@ export default function CreateCustomerForm() {
 
       // Confirm successfull operation with pop-up
       window.alert("Customer created successfully!");
+
+      navigate("/dashboard/customers", { replace: true });
     } catch (error) {
       console.log(error);
     }
@@ -92,6 +96,7 @@ export default function CreateCustomerForm() {
               placeholder="Enter first name"
               className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
               onChange={handleChange}
+              required
             />
           </div>
 
@@ -110,6 +115,7 @@ export default function CreateCustomerForm() {
               placeholder="Enter last name"
               className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
               onChange={handleChange}
+              required
             />
           </div>
 
@@ -125,6 +131,7 @@ export default function CreateCustomerForm() {
               placeholder="Enter email"
               className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
               onChange={handleChange}
+              required
             />
           </div>
 

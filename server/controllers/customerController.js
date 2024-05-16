@@ -111,6 +111,9 @@ exports.update_customer = [
   // Validate customer ID
   param("customerId").isMongoId().withMessage("Invalid customer ID"),
 
+  // Handle single file upload with field name "image"
+  upload.single("image"),
+
   // Validate and sanitize inputs
   body("firstName").trim().escape(),
   body("lastName").trim().escape(),
@@ -129,14 +132,17 @@ exports.update_customer = [
       const { customerId } = req.params;
 
       // Destructure request body
-      const { firstName, lastName, email, image } = req.body;
+      const { firstName, lastName, email } = req.body;
+
+      // Handle customer image
+      const customerImage = req.file ? req.file.filename : null;
 
       const updateFields = {};
 
       if (firstName) updateFields.firstName = firstName;
       if (lastName) updateFields.lastName = lastName;
       if (email) updateFields.email = email;
-      if (image) updateFields.image = image;
+      updateFields.image = customerImage;
 
       // Find customer in database and update details
       const updatedCustomer = await Customer.findByIdAndUpdate(

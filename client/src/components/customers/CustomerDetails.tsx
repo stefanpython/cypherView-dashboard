@@ -45,8 +45,6 @@ export default function CustomerDetails() {
     fetchCustomerDetails();
   }, []);
 
-  console.log(customer);
-
   // Format date
   const formatDate = (dateString: any) => {
     const inputDate = new Date(dateString);
