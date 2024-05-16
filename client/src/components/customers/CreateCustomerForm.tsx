@@ -1,13 +1,81 @@
+import React, { useState } from "react";
+import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
 
 export default function CreateCustomerForm() {
+  const [cookies, setCookies] = useCookies(["token"]);
+  const [customerDetails, setCustomerDetails] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    image: "",
+  });
+
+  // Handle input change
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+
+    setCustomerDetails((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  // Handle input change for images
+  const handleFileChange = (e: any) => {
+    const file = e.target.files[0];
+
+    setCustomerDetails((prevData) => ({ ...prevData, image: file }));
+  };
+
+  // Handle submit
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    // Create new FormData
+    const formData = new FormData();
+
+    formData.append("firstName", customerDetails.firstName);
+    formData.append("lastName", customerDetails.lastName);
+    formData.append("email", customerDetails.email);
+    formData.append("image", customerDetails.image);
+
+    try {
+      const response = await fetch("http://localhost:3000/customers", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${cookies.token}`,
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+      }
+
+      const customerData = await response.json();
+      console.log("Customer created successfully", customerData);
+
+      // Reset input fields after successful form submission
+      setCustomerDetails({
+        firstName: "",
+        lastName: "",
+        email: "",
+        image: "",
+      });
+
+      // Confirm successfull operation with pop-up
+      window.alert("Customer created successfully!");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <div className="flex w-full items-center justify-between">
         <h1 className={`text-2xl`}>Customers/Create</h1>
       </div>
 
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="rounded-md bg-gray-50 p-4 md:p-6">
           {/* First Name */}
           <div className="mb-4">
@@ -23,6 +91,7 @@ export default function CreateCustomerForm() {
               type="text"
               placeholder="Enter first name"
               className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              onChange={handleChange}
             />
           </div>
 
@@ -40,6 +109,7 @@ export default function CreateCustomerForm() {
               type="text"
               placeholder="Enter last name"
               className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              onChange={handleChange}
             />
           </div>
 
@@ -54,6 +124,7 @@ export default function CreateCustomerForm() {
               type="email"
               placeholder="Enter email"
               className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              onChange={handleChange}
             />
           </div>
 
@@ -68,6 +139,7 @@ export default function CreateCustomerForm() {
               type="file"
               accept="image/*"
               className="block w-full rounded-md border border-gray-200 py-2 px-3 text-sm"
+              onChange={handleFileChange}
             />
           </div>
         </div>
