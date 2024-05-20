@@ -16,6 +16,7 @@ import { Routes, Route } from "react-router-dom";
 import CreateCustomerForm from "./customers/CreateCustomerForm";
 import EditCustomerForm from "./customers/EditCustomerForm";
 import CustomerDetails from "./customers/CustomerDetails";
+import { jwtDecode } from "jwt-decode";
 
 const MenuItem = ({ icon: Icon, label, selected, onClick }: any) => {
   // Define the base class name for the menu item
@@ -53,6 +54,10 @@ export default function Dashboard() {
     // Redirect user to login page
     navigate("/login");
   };
+
+  // Decode the token
+  const decodedToken = jwtDecode(token.token);
+  console.log(decodedToken.role);
 
   return (
     <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">

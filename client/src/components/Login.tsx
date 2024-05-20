@@ -60,6 +60,24 @@ export default function Login() {
     }
   };
 
+  const handleDemoLogin = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/demo-login", {
+        method: "POST",
+      });
+
+      if (!response.ok) {
+        throw new Error("Demo login failed");
+      }
+
+      const data = await response.json();
+      setCookies("token", data.token, { path: "/" });
+      navigate("/dashboard");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <main className="flex items-center justify-center md:h-screen">
       <div className="relative mx-auto flex w-full max-w-[400px] flex-col space-y-2.5 p-4 md:-mt-32 shadow-lg">
@@ -133,6 +151,13 @@ export default function Login() {
             Log in
           </button>
         </form>
+
+        <button
+          className="btn w-full bg-orange-400 text-white"
+          onClick={handleDemoLogin}
+        >
+          Demo Login
+        </button>
       </div>
     </main>
   );

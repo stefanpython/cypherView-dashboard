@@ -26,6 +26,9 @@ router.get(
   user_controller.get_user_details
 );
 
+// -- Login DEMO user
+router.post("/demo-login", user_controller.demo_user);
+
 // -------------- CUSTOMER ROUTES ----------------
 
 // -- CREATE customer

@@ -110,3 +110,28 @@ exports.get_user_details = [
     }
   },
 ];
+
+exports.demo_user = async (req, res) => {
+  try {
+    // Authenticate demo user (you may have a dedicated demo user in your database)
+    const user = await User.findOne({ username: "cat" });
+
+    if (!user) {
+      throw new Error("Demo user not found");
+    }
+
+    // Generate JWT token with 'demo' role
+    const token = jwt.sign(
+      { userId: user._id, role: "demo" },
+      process.env.PASSPORT_KEY,
+      {
+        expiresIn: "1h",
+      }
+    );
+
+    res.json({ token });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
