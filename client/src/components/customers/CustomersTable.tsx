@@ -10,10 +10,14 @@ interface Customer {
 }
 
 interface CustomersTableProps {
+  deleteCustomer: (customerId: string) => void;
   customers: Customer[];
 }
 
-export default function CustomersTable({ customers }: CustomersTableProps) {
+export default function CustomersTable({
+  customers,
+  deleteCustomer,
+}: CustomersTableProps) {
   return (
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
@@ -49,7 +53,10 @@ export default function CustomersTable({ customers }: CustomersTableProps) {
                         </button>
                       </Link>
 
-                      <button className="rounded-md border p-2 hover:bg-gray-100">
+                      <button
+                        onClick={() => deleteCustomer(customer._id)}
+                        className="rounded-md border p-2 hover:bg-gray-100"
+                      >
                         <span className="sr-only">Delete</span>
                         <TrashIcon className="w-4" />
                       </button>
@@ -99,7 +106,10 @@ export default function CustomersTable({ customers }: CustomersTableProps) {
                         </button>
                       </Link>
 
-                      <button className="rounded-md border p-2 hover:bg-gray-200">
+                      <button
+                        onClick={() => deleteCustomer(customer._id)}
+                        className="rounded-md border p-2 hover:bg-gray-200"
+                      >
                         <span className="sr-only">Delete</span>
                         <TrashIcon className="w-4" />
                       </button>

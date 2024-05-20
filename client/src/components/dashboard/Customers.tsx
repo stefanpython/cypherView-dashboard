@@ -64,6 +64,36 @@ export default function Customers() {
     .slice(pageNumber * customersPerPage, (pageNumber + 1) * customersPerPage)
     .map((invoice) => invoice);
 
+  // Delete customer
+  const deleteCustomer = async (customerId: string) => {
+    try {
+      const confirmation = window.confirm("Are you sure?");
+      if (confirmation) {
+        const res = await fetch(
+          `http://localhost:3000/customers/${customerId}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${cookies.token}`,
+            },
+          }
+        );
+
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.message);
+        }
+
+        // Remove the deleted customer from the state
+        setCustomers(
+          customers.filter((customer) => customer._id !== customerId)
+        );
+      } else return;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="w-full">
       <div className="flex w-full items-center justify-between">
@@ -74,7 +104,10 @@ export default function Customers() {
         <CreateCustomer />
       </div>
 
-      <CustomersTable customers={displayCustomers} />
+      <CustomersTable
+        customers={displayCustomers}
+        deleteCustomer={deleteCustomer}
+      />
 
       <div className="mt-5 flex w-full justify-center">
         <ReactPaginate
