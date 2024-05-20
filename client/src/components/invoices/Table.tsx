@@ -2,6 +2,11 @@ import InvoiceStatus from "./Status";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
+import { jwtDecode, JwtPayload } from "jwt-decode";
+
+interface DecodedToken {
+  role: string;
+}
 
 export default function Table({ invoices, setInvoices }: any) {
   const [cookies, setCookies] = useCookies(["token"]);
@@ -31,34 +36,42 @@ export default function Table({ invoices, setInvoices }: any) {
   // Handle delete function
   const handleDelete = async (id: string) => {
     try {
-      const confirmation = window.confirm("Are you sure?");
-
-      if (confirmation) {
-        const res = await fetch(`http://localhost:3000/invoices/${id}`, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${cookies.token}`,
-          },
-        });
-
-        if (!res.ok) {
-          throw new Error("Failed to delete invoice");
-        }
-
-        // If deletion is successful, remove the invoice from the state
-        setInvoices((prevInvoices: any) =>
-          prevInvoices.filter((invoice: any) => invoice._id !== id)
-        );
-
-        window.alert("Invoice deleted successfully!");
+      if (isDemo) {
+        window.alert("Unauthorized operation!");
       } else {
-        return;
+        const confirmation = window.confirm("Are you sure?");
+
+        if (confirmation) {
+          const res = await fetch(`http://localhost:3000/invoices/${id}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${cookies.token}`,
+            },
+          });
+
+          if (!res.ok) {
+            throw new Error("Failed to delete invoice");
+          }
+
+          // If deletion is successful, remove the invoice from the state
+          setInvoices((prevInvoices: any) =>
+            prevInvoices.filter((invoice: any) => invoice._id !== id)
+          );
+
+          window.alert("Invoice deleted successfully!");
+        } else {
+          return;
+        }
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+  // Decode the token
+  const decodedToken = jwtDecode<DecodedToken>(cookies.token);
+  const isDemo = decodedToken.role === "demo";
 
   return (
     <div className="mt-6 flow-root">

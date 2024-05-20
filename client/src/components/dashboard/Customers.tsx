@@ -4,6 +4,7 @@ import SearchCustomers from "../customers/SearchCustomers";
 import { useCookies } from "react-cookie";
 import { useState, useEffect } from "react";
 import ReactPaginate from "react-paginate";
+import { jwtDecode } from "jwt-decode";
 
 interface Customer {
   _id: string;
@@ -11,6 +12,10 @@ interface Customer {
   lastName: string;
   email: string;
   image: string;
+}
+
+interface DecodedToken {
+  role: string;
 }
 
 export default function Customers() {
@@ -67,32 +72,40 @@ export default function Customers() {
   // Delete customer
   const deleteCustomer = async (customerId: string) => {
     try {
-      const confirmation = window.confirm("Are you sure?");
-      if (confirmation) {
-        const res = await fetch(
-          `http://localhost:3000/customers/${customerId}`,
-          {
-            method: "DELETE",
-            headers: {
-              Authorization: `Bearer ${cookies.token}`,
-            },
+      if (isDemo) {
+        window.alert("Unauthorized access!");
+      } else {
+        const confirmation = window.confirm("Are you sure?");
+        if (confirmation) {
+          const res = await fetch(
+            `http://localhost:3000/customers/${customerId}`,
+            {
+              method: "DELETE",
+              headers: {
+                Authorization: `Bearer ${cookies.token}`,
+              },
+            }
+          );
+
+          if (!res.ok) {
+            const errorData = await res.json();
+            throw new Error(errorData.message);
           }
-        );
 
-        if (!res.ok) {
-          const errorData = await res.json();
-          throw new Error(errorData.message);
-        }
-
-        // Remove the deleted customer from the state
-        setCustomers(
-          customers.filter((customer) => customer._id !== customerId)
-        );
-      } else return;
+          // Remove the deleted customer from the state
+          setCustomers(
+            customers.filter((customer) => customer._id !== customerId)
+          );
+        } else return;
+      }
     } catch (error) {
       console.log(error);
     }
   };
+
+  // Decode the token
+  const decodedToken = jwtDecode<DecodedToken>(cookies.token);
+  const isDemo = decodedToken.role === "demo";
 
   return (
     <div className="w-full">

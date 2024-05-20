@@ -17,6 +17,11 @@ import CreateCustomerForm from "./customers/CreateCustomerForm";
 import EditCustomerForm from "./customers/EditCustomerForm";
 import CustomerDetails from "./customers/CustomerDetails";
 import { jwtDecode } from "jwt-decode";
+import Unauthorized from "../Unauthorized";
+
+interface DecodedToken {
+  role: string;
+}
 
 const MenuItem = ({ icon: Icon, label, selected, onClick }: any) => {
   // Define the base class name for the menu item
@@ -56,8 +61,8 @@ export default function Dashboard() {
   };
 
   // Decode the token
-  const decodedToken = jwtDecode(token.token);
-  console.log(decodedToken.role);
+  const decodedToken = jwtDecode<DecodedToken>(token.token);
+  const isDemo = decodedToken.role === "demo";
 
   return (
     <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
@@ -115,14 +120,23 @@ export default function Dashboard() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/invoices" element={<Invoices />} />
-          <Route path="/create" element={<CreateInvoiceForm />} />
-          <Route path="/edit/:invoiceId" element={<EditForm />} />
+          <Route
+            path="/create"
+            element={isDemo ? <Unauthorized /> : <CreateInvoiceForm />}
+          />
+          <Route
+            path="/edit/:invoiceId"
+            element={isDemo ? <Unauthorized /> : <EditForm />}
+          />
 
           <Route path="/customers" element={<Customers />} />
-          <Route path="/customers/create" element={<CreateCustomerForm />} />
+          <Route
+            path="/customers/create"
+            element={isDemo ? <Unauthorized /> : <CreateCustomerForm />}
+          />
           <Route
             path="/customers/edit/:customerId"
-            element={<EditCustomerForm />}
+            element={isDemo ? <Unauthorized /> : <EditCustomerForm />}
           />
           <Route
             path="/customers/details/:customerId"
