@@ -90,17 +90,20 @@ export default function EditCustomerForm() {
       }
 
       const customerData = await response.json();
-      // console.log("Customer updated successfully", customerData);
+      console.log("Customer updated successfully", customerData);
 
       // Reset input fields after successful form submission
-      // setCustomerDetails({
-      //   firstName: "",
-      //   lastName: "",
-      //   email: "",
-      //   image: "",
-      // });
+      setCustomerDetails({
+        firstName: "",
+        lastName: "",
+        email: "",
+        image: "",
+      });
 
-      // navigate("/dashboard/customers");
+      // Confirm successfull operation with pop-up
+      window.alert("Customer updated successfully!");
+
+      navigate("/dashboard/customers");
     } catch (error) {
       console.log(error);
     }
