@@ -15,7 +15,7 @@ interface CustomerProps {
 
 export default function CustomerDetails() {
   const { customerId } = useParams();
-  const [cookies, setCookies] = useCookies(["token"]);
+  const [cookies] = useCookies(["token"]);
 
   const [customer, setCustomer] = useState<CustomerProps>();
 

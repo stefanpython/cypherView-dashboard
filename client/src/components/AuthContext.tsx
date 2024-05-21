@@ -19,7 +19,7 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [cookies, setCookies] = useCookies(["token"]);
+  const [cookies] = useCookies(["token"]);
 
   // State to manage isLoggedIn
   const [isLoggedIn, setIsLoggedIn] = useState(!!cookies.token);

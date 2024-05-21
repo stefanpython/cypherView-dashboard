@@ -12,7 +12,7 @@ interface DecodedToken {
 }
 
 export default function Table({ invoices, setInvoices }: any) {
-  const [cookies, setCookies] = useCookies(["token"]);
+  const [cookies] = useCookies(["token"]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

@@ -16,7 +16,7 @@ interface Customer {
 }
 
 export default function CreateInvoiceForm() {
-  const [cookies, setCookies] = useCookies(["token"]);
+  const [cookies] = useCookies(["token"]);
   const [customers, setCustomers] = useState<Customer[]>();
 
   const [customer, setCustomer] = useState<string | undefined>();
@@ -69,8 +69,6 @@ export default function CreateInvoiceForm() {
         const invoiceData = await res.json();
         throw new Error(invoiceData.message);
       }
-
-      const createdData = await res.json();
 
       window.alert("Invoice created successfully!");
 

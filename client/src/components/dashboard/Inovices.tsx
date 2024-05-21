@@ -26,7 +26,7 @@ interface Invoice {
 }
 
 export default function Invoices() {
-  const [cookies, setCookies] = useCookies(["token"]);
+  const [cookies] = useCookies(["token"]);
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
 

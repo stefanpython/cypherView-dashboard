@@ -22,7 +22,7 @@ interface Customer {
 }
 
 export default function EditForm() {
-  const [cookies, setCookies] = useCookies(["token"]);
+  const [cookies] = useCookies(["token"]);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [invoice, setInvoice] = useState<Invoice | undefined>();
 

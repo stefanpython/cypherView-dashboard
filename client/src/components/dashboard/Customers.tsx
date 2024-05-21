@@ -19,7 +19,7 @@ interface DecodedToken {
 }
 
 export default function Customers() {
-  const [cookies, setCookies] = useCookies(["token"]);
+  const [cookies] = useCookies(["token"]);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
 

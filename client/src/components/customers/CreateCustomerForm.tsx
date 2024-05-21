@@ -3,7 +3,7 @@ import { useCookies } from "react-cookie";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function CreateCustomerForm() {
-  const [cookies, setCookies] = useCookies(["token"]);
+  const [cookies] = useCookies(["token"]);
   const [customerDetails, setCustomerDetails] = useState({
     firstName: "",
     lastName: "",

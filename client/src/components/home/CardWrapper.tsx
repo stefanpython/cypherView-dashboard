@@ -22,7 +22,7 @@ interface TotalCustomersData {
 }
 
 export default function CardWrapper() {
-  const [cookies, setCookies] = useCookies(["token"]);
+  const [cookies] = useCookies(["token"]);
   const [totalCollected, setTotalCollected] =
     useState<TotalCollectedData | null>(null);
   const [totalPending, setTotalPending] = useState<TotalPendingData | null>(
