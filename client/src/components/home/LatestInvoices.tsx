@@ -31,12 +31,15 @@ export default function LatestInvoices() {
   // Fetch Invoices
   const fetchInvoices = async () => {
     try {
-      const res = await fetch("http://localhost:3000/invoices", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.token}`,
-        },
-      });
+      const res = await fetch(
+        "https://cypherview-dashboard-1.onrender.com/invoices",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${cookies.token}`,
+          },
+        }
+      );
 
       if (!res.ok) {
         const invoicesData = await res.json();
@@ -94,7 +97,7 @@ export default function LatestInvoices() {
                   <div className="flex items-center">
                     <img
                       className="w-10 h-10 rounded-full object-cover mr-2"
-                      src={`http://localhost:3000/images/${invoice.customer.image}`}
+                      src={`https://cypherview-dashboard-1.onrender.com/images/${invoice.customer.image}`}
                       alt="customer image"
                     />
                     <div className="min-w-0">

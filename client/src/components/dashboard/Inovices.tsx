@@ -36,12 +36,15 @@ export default function Invoices() {
   // Fetch Invoices
   const fetchInvoices = async () => {
     try {
-      const res = await fetch("http://localhost:3000/invoices", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.token}`,
-        },
-      });
+      const res = await fetch(
+        "https://cypherview-dashboard-1.onrender.com/invoices",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${cookies.token}`,
+          },
+        }
+      );
 
       if (!res.ok) {
         const invoicesData = await res.json();

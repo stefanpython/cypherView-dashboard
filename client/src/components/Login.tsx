@@ -26,16 +26,19 @@ export default function Login() {
 
     try {
       // Perform login logic
-      const res = await fetch("http://localhost:3000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
+      const res = await fetch(
+        "https://cypherview-dashboard-1.onrender.com/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        }
+      );
 
       // Check if response is ok
       if (!res.ok) {
@@ -62,9 +65,12 @@ export default function Login() {
 
   const handleDemoLogin = async () => {
     try {
-      const response = await fetch("http://localhost:3000/demo-login", {
-        method: "POST",
-      });
+      const response = await fetch(
+        "https://cypherview-dashboard-1.onrender.com/demo-login",
+        {
+          method: "POST",
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Demo login failed");

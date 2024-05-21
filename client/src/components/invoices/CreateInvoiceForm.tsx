@@ -28,12 +28,15 @@ export default function CreateInvoiceForm() {
   // Fetch all customers
   const fetchCustomers = async () => {
     try {
-      const res = await fetch("http://localhost:3000/customers", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.token}`,
-        },
-      });
+      const res = await fetch(
+        "https://cypherview-dashboard-1.onrender.com/customers",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${cookies.token}`,
+          },
+        }
+      );
 
       if (!res.ok) {
         const customerData = await res.json();
@@ -56,14 +59,17 @@ export default function CreateInvoiceForm() {
     e.preventDefault();
 
     try {
-      const res = await fetch(`http://localhost:3000/invoices`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.token}`,
-        },
-        body: JSON.stringify({ customer, amount, status }),
-      });
+      const res = await fetch(
+        `https://cypherview-dashboard-1.onrender.com/invoices`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${cookies.token}`,
+          },
+          body: JSON.stringify({ customer, amount, status }),
+        }
+      );
 
       if (!res.ok) {
         const invoiceData = await res.json();
@@ -114,15 +120,6 @@ export default function CreateInvoiceForm() {
               </select>
               <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
             </div>
-
-            <div id="customer-error" aria-live="polite" aria-atomic="true">
-              {/* {state.errors?.customerId &&
-          state.errors.customerId.map((error: string) => (
-            <p className="mt-2 text-sm text-red-500" key={error}>
-              {error}
-            </p>
-          ))} */}
-            </div>
           </div>
 
           {/* Invoice Amount */}
@@ -144,15 +141,6 @@ export default function CreateInvoiceForm() {
                 />
                 <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
               </div>
-            </div>
-
-            <div id="amount-error" aria-live="polite" aria-atomic="true">
-              {/* {state.errors?.amount &&
-          state.errors.amount.map((error: string) => (
-            <p className="mt-2 text-sm text-red-500" key={error}>
-              {error}
-            </p>
-          ))} */}
             </div>
           </div>
 

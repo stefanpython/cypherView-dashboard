@@ -35,12 +35,15 @@ export default function EditForm() {
   // Fetch invoice details by id
   const fetchInvoiceById = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/invoices/${invoiceId}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.token}`,
-        },
-      });
+      const res = await fetch(
+        `https://cypherview-dashboard-1.onrender.com/invoices/${invoiceId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${cookies.token}`,
+          },
+        }
+      );
 
       if (!res.ok) {
         const invoiceData = await res.json();
@@ -57,12 +60,15 @@ export default function EditForm() {
   // Fetch all customers
   const fetchCustomers = async () => {
     try {
-      const res = await fetch("http://localhost:3000/customers", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.token}`,
-        },
-      });
+      const res = await fetch(
+        "https://cypherview-dashboard-1.onrender.com/customers",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${cookies.token}`,
+          },
+        }
+      );
 
       if (!res.ok) {
         const customerData = await res.json();
@@ -81,14 +87,17 @@ export default function EditForm() {
     e.preventDefault();
 
     try {
-      const res = await fetch(`http://localhost:3000/invoices/${invoiceId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.token}`,
-        },
-        body: JSON.stringify({ amount, status }),
-      });
+      const res = await fetch(
+        `https://cypherview-dashboard-1.onrender.com/invoices/${invoiceId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${cookies.token}`,
+          },
+          body: JSON.stringify({ amount, status }),
+        }
+      );
 
       if (!res.ok) {
         const customerData = await res.json();

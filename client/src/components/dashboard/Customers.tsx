@@ -29,12 +29,15 @@ export default function Customers() {
   // Fetch Customers List
   const fetchCustomers = async () => {
     try {
-      const res = await fetch("http://localhost:3000/customers", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.token}`,
-        },
-      });
+      const res = await fetch(
+        "https://cypherview-dashboard-1.onrender.com/customers",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${cookies.token}`,
+          },
+        }
+      );
 
       if (!res.ok) {
         const invoicesData = await res.json();
@@ -78,7 +81,7 @@ export default function Customers() {
         const confirmation = window.confirm("Are you sure?");
         if (confirmation) {
           const res = await fetch(
-            `http://localhost:3000/customers/${customerId}`,
+            `https://cypherview-dashboard-1.onrender.com/customers/${customerId}`,
             {
               method: "DELETE",
               headers: {

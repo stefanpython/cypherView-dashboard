@@ -24,12 +24,15 @@ export default function EditCustomerForm() {
   // Fetch customer details
   const fetchCustomerById = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/customers/${customerId}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.token}`,
-        },
-      });
+      const res = await fetch(
+        `https://cypherview-dashboard-1.onrender.com/customers/${customerId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${cookies.token}`,
+          },
+        }
+      );
 
       if (!res.ok) {
         const errorData = await res.json();
@@ -74,7 +77,7 @@ export default function EditCustomerForm() {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/customers/${customerId}`,
+        `https://cypherview-dashboard-1.onrender.com/customers/${customerId}`,
         {
           method: "PUT",
           headers: {
@@ -108,8 +111,6 @@ export default function EditCustomerForm() {
       console.log(error);
     }
   };
-
-  console.log(customerDetails);
 
   return (
     <div>

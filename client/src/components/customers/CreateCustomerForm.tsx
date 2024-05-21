@@ -40,13 +40,16 @@ export default function CreateCustomerForm() {
     formData.append("image", customerDetails.image);
 
     try {
-      const response = await fetch("http://localhost:3000/customers", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${cookies.token}`,
-        },
-        body: formData,
-      });
+      const response = await fetch(
+        "https://cypherview-dashboard-1.onrender.com/customers",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${cookies.token}`,
+          },
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();

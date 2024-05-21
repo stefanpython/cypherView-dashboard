@@ -59,7 +59,7 @@ export default function CustomersTable({
                         <div className="mb-2 flex items-center w-full">
                           <img
                             className="w-10 h-10 rounded-full object-cover mr-2"
-                            src={`http://localhost:3000/images/${customer.image}`}
+                            src={`https://cypherview-dashboard-1.onrender.com/images/${customer.image}`}
                             alt="customer image"
                           />
                           <p>
@@ -111,7 +111,7 @@ export default function CustomersTable({
                           <div className="flex items-center gap-3">
                             <img
                               className="w-10 h-10 rounded-full object-cover mr-2"
-                              src={`http://localhost:3000/images/${customer.image}`}
+                              src={`https://cypherview-dashboard-1.onrender.com/images/${customer.image}`}
                               alt="customer image"
                             />
                             <p>

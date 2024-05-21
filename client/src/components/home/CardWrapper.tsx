@@ -39,7 +39,7 @@ export default function CardWrapper() {
     try {
       // Try to fetch total collected $ amount
       const res = await fetch(
-        "http://localhost:3000/invoices/total-collected",
+        "https://cypherview-dashboard-1.onrender.com/invoices/total-collected",
         {
           headers: {
             "Content-Type": "application/json",
@@ -65,12 +65,15 @@ export default function CardWrapper() {
   // Fetch pending amount of $
   const fetchPending = async () => {
     try {
-      const res = await fetch("http://localhost:3000/invoices/total-pending", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.token}`,
-        },
-      });
+      const res = await fetch(
+        "https://cypherview-dashboard-1.onrender.com/invoices/total-pending",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${cookies.token}`,
+          },
+        }
+      );
 
       if (!res.ok) {
         const errorData = await res.json();
@@ -87,12 +90,15 @@ export default function CardWrapper() {
   // Fetch total number of invoices
   const fetchTotalInvoices = async () => {
     try {
-      const res = await fetch("http://localhost:3000/invoices", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.token}`,
-        },
-      });
+      const res = await fetch(
+        "https://cypherview-dashboard-1.onrender.com/invoices",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${cookies.token}`,
+          },
+        }
+      );
 
       if (!res.ok) {
         const errorData = await res.json();
@@ -109,12 +115,15 @@ export default function CardWrapper() {
   // Fetch total number or customers
   const fetchTotalCustomers = async () => {
     try {
-      const res = await fetch("http://localhost:3000/customers", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.token}`,
-        },
-      });
+      const res = await fetch(
+        "https://cypherview-dashboard-1.onrender.com/customers",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${cookies.token}`,
+          },
+        }
+      );
 
       if (!res.ok) {
         const errorData = await res.json();
@@ -135,7 +144,6 @@ export default function CardWrapper() {
     fetchTotalCustomers();
   }, []);
 
-  console.log();
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
       <div className="rounded-xl bg-gray-50 p-2 shadow-sm">

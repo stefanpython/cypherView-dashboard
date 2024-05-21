@@ -22,12 +22,15 @@ export default function CustomerDetails() {
   // Fetch customer details
   const fetchCustomerDetails = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/customers/${customerId}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.token}`,
-        },
-      });
+      const res = await fetch(
+        `https://cypherview-dashboard-1.onrender.com/customers/${customerId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${cookies.token}`,
+          },
+        }
+      );
 
       if (!res.ok) {
         const invoicesData = await res.json();
@@ -81,7 +84,7 @@ export default function CustomerDetails() {
               <dt className="text-sm font-medium text-gray-500">Avatar</dt>
               <dd className="mt-1 text-sm text-gray-900 sm:col-span-2">
                 <img
-                  src={`http://localhost:3000/images/${customer?.image}`}
+                  src={`https://cypherview-dashboard-1.onrender.com/images/${customer?.image}`}
                   alt="Customer"
                   className="h-20 w-20 rounded-md"
                 />
