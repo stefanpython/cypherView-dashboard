@@ -135,9 +135,6 @@ export default function CardWrapper() {
     fetchTotalCustomers();
   }, []);
 
-  //@ts-ignore
-  // console.log(totalInvoices?.invoices[0]);
-
   console.log();
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
