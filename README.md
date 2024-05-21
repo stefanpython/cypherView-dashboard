@@ -11,6 +11,8 @@ The application also has a demo login user with limited authorization.
 - View pending amount
 - View total number of invoices
 - View total number of customers
+- Add/Edit/Delete invoices
+- Add/Edit/Delete customers
 - Responsive design
 
 ## Technologies Used
