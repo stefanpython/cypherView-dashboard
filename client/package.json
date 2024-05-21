@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://stefanpython.github.io/cypherView-dashboard/tree/main/client",
+  "homepage": "https://stefanpython.github.io/cypherView-dashboard",
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
