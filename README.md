@@ -7,7 +7,7 @@ Live demo [HERE](https://stefanpython.github.io/cypherView-dashboard/)
 
 ![Home Screenshot](client/public/previews/home.png)
 
-![Invoices Screenshot](client/public/previews/invoices.png)
+![Invoices Screenshot](client/public/previews/invoices1.png)
 
 ![Create Screenshot](client/public/previews/createCustomer.png)
 
