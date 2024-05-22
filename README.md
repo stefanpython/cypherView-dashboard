@@ -3,6 +3,8 @@
 This is a full-stack Invoice Management System built with React, TypeScript, Express, MongoDB Atlas, and TailwindCSS for managing invoices and customers. It allows users to view the total collected amount, pending amount, total invoices, and total customers.
 The application also has a demo login user with limited authorization.
 
+Live demo [HERE](https://stefanpython.github.io/cypherView-dashboard/)
+
 ## Features
 
 - View total collected amount
