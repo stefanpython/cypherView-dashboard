@@ -7,6 +7,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // New state for loading
 
   const { setIsLoggedIn } = useAuth();
 
@@ -23,9 +24,9 @@ export default function Login() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true); // Set loading to true
 
     try {
-      // Perform login logic
       const res = await fetch(
         "https://cypherview-dashboard-1.onrender.com/login",
         {
@@ -40,30 +41,27 @@ export default function Login() {
         }
       );
 
-      // Check if response is ok
       if (!res.ok) {
         const errorData = await res.json();
         setError(errorData.message);
+        setIsLoading(false); // Set loading to false
         return;
       }
 
-      // Handle successful login
       const data = await res.json();
-
-      // Set token in cookies
       const { token } = data;
       setCookies("token", token, { path: "/" });
-
-      // Set auth context hook to true
       setIsLoggedIn(true);
-
       navigate("/dashboard");
     } catch (error) {
       console.log("Login failed", error);
+    } finally {
+      setIsLoading(false); // Set loading to false
     }
   };
 
   const handleDemoLogin = async () => {
+    setIsLoading(true); // Set loading to true
     try {
       const response = await fetch(
         "https://cypherview-dashboard-1.onrender.com/demo-login",
@@ -78,9 +76,12 @@ export default function Login() {
 
       const data = await response.json();
       setCookies("token", data.token, { path: "/" });
+      setIsLoggedIn(true);
       navigate("/dashboard");
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false); // Set loading to false
     }
   };
 
@@ -153,16 +154,21 @@ export default function Login() {
             </div>
           </div>
 
-          <button type="submit" className="btn w-full bg-blue-400 text-white">
-            Log in
+          <button
+            type="submit"
+            className="btn w-full bg-blue-400 text-white"
+            disabled={isLoading}
+          >
+            {isLoading ? "Logging in..." : "Log in"}
           </button>
         </form>
 
         <button
           className="btn w-full bg-orange-400 text-white"
           onClick={handleDemoLogin}
+          disabled={isLoading}
         >
-          Demo Login
+          {isLoading ? "Logging in..." : "Demo Login"}
         </button>
 
         <h1 className="flex justify-center text-md text-red-700 font-medium">
