@@ -5,6 +5,8 @@ The application also has a demo login user with limited authorization.
 
 Live demo [HERE](https://stefanpython.github.io/cypherView-dashboard/)
 
+![Home Screenshot](client/public/previews/home.png)
+
 ## Features
 
 - View total collected amount
