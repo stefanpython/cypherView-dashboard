@@ -191,7 +191,7 @@ exports.delete_customer = [
       }
 
       // Delete all invoices related to the customer
-      await Invoice.deleteMany({ customerId: customerId });
+      await Invoice.deleteMany({ customer: customerId });
 
       // Send success message to the frontend
       return res.status(200).json({ message: "Customer deleted successfully" });
