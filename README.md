@@ -7,6 +7,12 @@ Live demo [HERE](https://stefanpython.github.io/cypherView-dashboard/)
 
 ![Home Screenshot](client/public/previews/home.png)
 
+![Invoices Screenshot](client/public/previews/invoices.png)
+
+![Create Screenshot](client/public/previews/createCustomer.png)
+
+![Edit Invoice Screenshot](client/public/previews/editInvoice.png)
+
 ## Features
 
 - View total collected amount
