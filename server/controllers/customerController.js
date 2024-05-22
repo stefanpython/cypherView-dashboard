@@ -1,6 +1,7 @@
 const Customer = require("../models/Customer");
 const { body, param, validationResult } = require("express-validator");
 const multer = require("multer");
+const Invoice = require("../models/Invoice");
 
 // Set up multer storage and filename for uploading images
 const storage = multer.diskStorage({
@@ -188,6 +189,9 @@ exports.delete_customer = [
       if (!deletedCustomer) {
         return res.status(400).json({ message: "Customer not found" });
       }
+
+      // Delete all invoices related to the customer
+      await Invoice.deleteMany({ customerId: customerId });
 
       // Send success message to the frontend
       return res.status(200).json({ message: "Customer deleted successfully" });

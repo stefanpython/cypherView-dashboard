@@ -78,7 +78,9 @@ export default function Customers() {
       if (isDemo) {
         window.alert("Unauthorized access!");
       } else {
-        const confirmation = window.confirm("Are you sure?");
+        const confirmation = window.confirm(
+          "All invoices of this customer will also be deleted. Are you sure?"
+        );
         if (confirmation) {
           const res = await fetch(
             `https://cypherview-dashboard-1.onrender.com/customers/${customerId}`,
