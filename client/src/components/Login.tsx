@@ -173,7 +173,7 @@ export default function Login() {
 
         <h1 className="flex justify-center text-md text-red-700 font-medium">
           <span className="font-bold mr-1 text-black">Note: </span> 1st time
-          loging in takes between 10s - 30s for the server to start.
+          loging in takes up to 60 seconds for the server to start.
         </h1>
       </div>
     </main>
